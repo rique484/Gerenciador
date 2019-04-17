@@ -19,7 +19,11 @@ import javax.swing.JOptionPane;
  */
 public class Order {
 
-    private static final String SELECT_ORDER = "select * from pedido where num_comanda=? AND status=0 ";
+    
+    private static final String SELECT_ORDER = "select * from pedido where "
+            + "num_comanda=? AND status=0 ";
+    private static final String INSERT_ORDER = "insert into venda(valor,quanti"
+            + "dade,idproduto,idpedido,iduser) values(?,?,?,?,?)";
     //************************************
     private Integer numero_comanda;
     private Double valor_total;
@@ -76,15 +80,16 @@ public class Order {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e);
-            return null;
+            System.out.println(e); 
+            return false;
         }
     }
     
-    public Boolean orderInsert(Double valor,Integer quantidade,Integer idproduto,Integer idpedido,Integer iduser){
+    public Boolean orderInsert(Double valor,Integer quantidade,Integer idproduto
+            ,Integer idpedido,Integer iduser){
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into venda(valor,quantidade,idproduto,idpedido,iduser) values(?,?,?,?,?)";
+        String sql = INSERT_ORDER;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -102,27 +107,9 @@ public class Order {
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
-            String err = e.toString();
-            if (err.contains("Duplicate")) {
-                JOptionPane.showMessageDialog(null, "");
-            } else {
-                JOptionPane.showMessageDialog(null, e);
-            }
+
             return null;
         }
     } 
-        /*public Boolean ad(){
-        Connection conexao = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        conexao = new ConfigDB().conector();
-        String sql = "select valor,quantidade,user,comissao from venda";
-        try {
-         pst = conexao.prepareStatement(sql);
-         rs  = pst.executeQuery();  
-         //tbUser.setModel(DbUtils.resultSetToTableModel(rs));
-         conexao.close();
-        } catch (SQLException e) {
-        }
-        }*/
+    
 }

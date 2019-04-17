@@ -6,6 +6,7 @@
 package com.app.gerecia.view;
 
 import com.app.gerecia.config.TempFileUser;
+import com.app.gerecia.model.Sale;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
 
@@ -112,7 +113,7 @@ public class OrderConfirmation extends javax.swing.JDialog {
         Double val = quant*valor;
         Order v = new Order();
         if(v.orderInsert(val, quant, idproduto, idpedido,idusuario).equals(true)){
-        this.dispose();
+            this.dispose();
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 

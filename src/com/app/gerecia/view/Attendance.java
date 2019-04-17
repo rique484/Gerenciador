@@ -5,9 +5,15 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.ConfigDB;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
+import com.app.gerecia.model.Sale;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -19,10 +25,14 @@ public class Attendance extends javax.swing.JFrame {
     /**
      * Creates new form Attendance
      */
+ 
     public Attendance() {
-        initComponents();
+        initComponents();       
     }
-
+    public void orderList(int idcomanda){
+    jTable2.setModel(DbUtils.resultSetToTableModel( new Sale().consultaSale(idcomanda)));
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,6 +57,7 @@ public class Attendance extends javax.swing.JFrame {
         btnRemove = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnReload = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
 
@@ -167,6 +178,15 @@ public class Attendance extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel4.setText("R$ ");
 
+        btnReload.setBackground(new java.awt.Color(204, 204, 204));
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_agt_reload_18517 (1).png"))); // NOI18N
+        btnReload.setEnabled(false);
+        btnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -182,14 +202,18 @@ public class Attendance extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRemove)))
+                        .addComponent(btnRemove))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemove)
@@ -236,7 +260,7 @@ public class Attendance extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSair)
                     .addComponent(btnFinalizar))
@@ -255,7 +279,9 @@ public class Attendance extends javax.swing.JFrame {
             txtBuscarCom.setEnabled(false);
             btnBuscar.setEnabled(false);
             txtBuscarProd.setEnabled(true);
+            btnReload.setEnabled(true);
             String temp = String.valueOf(p.getId());
+            orderList(p.getId());
             new TempFileUser().tempWriterOrder(temp);
         }else{
             System.out.println("teste erro");
@@ -284,10 +310,15 @@ public class Attendance extends javax.swing.JFrame {
         atc.setVisible(true);
     }//GEN-LAST:event_tblBuscaMouseClicked
 
+    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
+        orderList(Integer.parseInt(new TempFileUser().tempReadOrder()));
+    }//GEN-LAST:event_btnReloadActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnFinalizar;
+    private javax.swing.JButton btnReload;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSair;
     private javax.swing.JLabel jLabel1;
