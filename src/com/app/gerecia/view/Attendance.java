@@ -17,8 +17,6 @@ import com.app.gerecia.config.Messager;
  * @author rique
  */
 public class Attendance extends javax.swing.JFrame {
-
-    
  
     public Attendance() {
         initComponents();       
@@ -26,6 +24,11 @@ public class Attendance extends javax.swing.JFrame {
     public void orderList(int idcomanda){
     jTable2.setModel(DbUtils.resultSetToTableModel( new Sale().consultaSale(idcomanda)));
     jTable2.setEnabled(false);
+    double count=0;
+    for (int i=0; i<=jTable2.getRowCount()-1;i++) {
+    count+=Double.parseDouble(jTable2.getValueAt(i, 3).toString());
+    }
+    lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,7 +55,7 @@ public class Attendance extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         btnRemove = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lbValorTotal = new javax.swing.JLabel();
         btnReload = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
@@ -196,8 +199,8 @@ public class Attendance extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
         jLabel3.setText("Valor da comanda:");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-        jLabel4.setText("R$ ");
+        lbValorTotal.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        lbValorTotal.setText("R$ ");
 
         btnReload.setBackground(new java.awt.Color(204, 204, 204));
         btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_agt_reload_18517 (1).png"))); // NOI18N
@@ -221,7 +224,7 @@ public class Attendance extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRemove))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -239,7 +242,7 @@ public class Attendance extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemove)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(lbValorTotal))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -369,7 +372,6 @@ public class Attendance extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -377,6 +379,7 @@ public class Attendance extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JLabel lbValorTotal;
     private javax.swing.JTable tblBusca;
     private javax.swing.JTextField txtBuscarCom;
     private javax.swing.JTextField txtBuscarProd;

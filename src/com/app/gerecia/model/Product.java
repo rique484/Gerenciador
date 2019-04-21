@@ -98,7 +98,9 @@ public class Product {
                 Connection conexao = null;
                 PreparedStatement pst = null;
                 ResultSet rs = null;
-                String sql = "select * from produto where idproduto like ? or cod_bar = ?";   
+                String sql = "select idproduto as 'ID',nome as 'Nome', "
+                        + "valor_unt as 'Valor' from produto where"
+                        + " idproduto like ? or cod_bar = ?";   
             try {
                 conexao = new ConfigDB().conector();
                 pst = conexao.prepareStatement(sql);

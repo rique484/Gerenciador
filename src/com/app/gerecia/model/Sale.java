@@ -22,9 +22,11 @@ public class Sale {
         PreparedStatement pst = null;
         ResultSet rs = null;
         conexao = new ConfigDB().conector();
-        String sql = "select nome,num_comanda from produto inner join venda on "
-                + "produto.idproduto = venda.idproduto inner join pedido on"
-                + " pedido.idpedido = venda.idpedido where num_comanda = ? and pedido.status=0";
+        String sql = "select nome as 'Nome' ,valor_unt as 'Valor Unitario',"
+                + "quantidade as 'Quantidade', valor as 'Valor total' from produto inner join venda on "
+                + "produto.idproduto = venda.idproduto inner join pedido on "
+                + "pedido.idpedido = venda.idpedido where num_comanda = ? and "
+                + "pedido.status=0";
         try {
          pst = conexao.prepareStatement(sql);
          pst.setInt(1, idpedido);
