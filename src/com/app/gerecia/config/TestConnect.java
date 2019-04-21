@@ -15,9 +15,6 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class TestConnect {
-    
-    private static final String FAIL_CONN = "Sem conexao com base de dados, verificar conexao com o banco de dados ou se a configuracao esta correta";
-    
         public boolean testC(){
         Connection conexao = null;
         conexao = new ConfigDB().conector();   
@@ -26,7 +23,8 @@ public class TestConnect {
             conexao.close();
             return true;
         }else{
-            JOptionPane.showMessageDialog(null, FAIL_CONN , "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, Messager.FAIL_CONN , "Erro", 
+                    JOptionPane.ERROR_MESSAGE);
             return false;
            } 
         } catch (HeadlessException | SQLException e) {

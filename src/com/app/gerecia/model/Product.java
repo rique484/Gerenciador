@@ -6,10 +6,12 @@
 package com.app.gerecia.model;
 
 import com.app.gerecia.config.ConfigDB;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -62,22 +64,50 @@ public class Product {
         this.status = status;
     }
     
-    
+    public Boolean cadastroProduto(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = "insert into produto(nome,valor_unt,cod_bar,status) values(?,?,?,?)";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, nome);
+            pst.setDouble(2, valor);
+            pst.setString(3, codBar);
+            pst.setInt(4, status);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            String err = e.toString();
+            if (err.contains("Duplicate")) {
+                JOptionPane.showMessageDialog(null, "Nome do produto ja cadastrado");
+            } else {
+                JOptionPane.showMessageDialog(null, e);
+            }
+            return false;
+        }
+    }
     
     public ResultSet advancedSearch(String busca){
                 Connection conexao = null;
                 PreparedStatement pst = null;
                 ResultSet rs = null;
-                String sql = "select * from produto where idproduto = ?";
+                String sql = "select * from produto where idproduto like ? or cod_bar = ?";   
             try {
                 conexao = new ConfigDB().conector();
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1,busca+"%"); 
+                pst.setString(2,busca);
                 rs = pst.executeQuery();   
-                //conexao.close();
                 return rs; 
             } catch (SQLException e) {
-                return null;
-            }
+                return null; 
+            }     
     }
 }

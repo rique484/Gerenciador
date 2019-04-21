@@ -24,7 +24,10 @@ public class Order {
             + "num_comanda=? AND status=0 ";
     private static final String INSERT_ORDER = "insert into venda(valor,quanti"
             + "dade,idproduto,idpedido,iduser) values(?,?,?,?,?)";
-    //************************************
+    private static final String CREATE_ORDER = "insert into pedido(num_comanda,"
+            + "status) values(?,0)";
+    
+    
     private Integer numero_comanda;
     private Double valor_total;
     private Integer status;
@@ -108,8 +111,28 @@ public class Order {
             }
         } catch (HeadlessException | SQLException e) {
 
-            return null;
+            return false;
         }
     } 
     
+    public Boolean orderCreate(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = CREATE_ORDER;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, numero_comanda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            return false;
+        }
+    }
 }

@@ -5,33 +5,27 @@
  */
 package com.app.gerecia.view;
 
-import com.app.gerecia.config.ConfigDB;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
 import com.app.gerecia.model.Sale;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
-
+import com.app.gerecia.config.Messager;
 /**
  *
  * @author rique
  */
 public class Attendance extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Attendance
-     */
+    
  
     public Attendance() {
         initComponents();       
     }
     public void orderList(int idcomanda){
     jTable2.setModel(DbUtils.resultSetToTableModel( new Sale().consultaSale(idcomanda)));
-        
+    jTable2.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -173,10 +167,11 @@ public class Attendance extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -311,7 +306,24 @@ public class Attendance extends javax.swing.JFrame {
             orderList(p.getId());
             new TempFileUser().tempWriterOrder(temp);
         }else{
-            System.out.println("teste erro");
+            System.out.println("teste nova comanda");
+            int val = JOptionPane.showConfirmDialog(null, Messager.NEW_ORDER ,
+                    "ALERTA", JOptionPane.OK_CANCEL_OPTION);
+            if (val == 0) {
+                p.setNumero_comanda(Integer.parseInt(txtBuscarCom.getText()));
+                if(p.orderCreate()==true){
+                    if(p.consulta()==true){
+                    txtBuscarCom.setEnabled(false);
+                    btnBuscar.setEnabled(false);
+                    txtBuscarProd.setEnabled(true);
+                    btnReload.setEnabled(true);
+                    btnNew.setEnabled(true);
+                    String temp = String.valueOf(p.getId());
+                    orderList(p.getId());
+                    new TempFileUser().tempWriterOrder(temp);
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -334,7 +346,7 @@ public class Attendance extends javax.swing.JFrame {
         System.out.println(p.getValor());
         OrderConfirmation atc = new OrderConfirmation(this,true);
         atc.exportData(p);
-        atc.setVisible(true);
+        atc.setVisible(true); 
     }//GEN-LAST:event_tblBuscaMouseClicked
 
     private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed

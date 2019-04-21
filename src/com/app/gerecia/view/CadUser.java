@@ -5,6 +5,7 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Messager;
 import com.app.gerecia.model.User;
 import javax.swing.JOptionPane;
 
@@ -297,13 +298,13 @@ public class CadUser extends javax.swing.JFrame {
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
         if (txtNome.getText()==null || txtNome.getText().trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preecha o nome");
+            JOptionPane.showMessageDialog(null, Messager.NAME_REQUIRED);
         } else {
             if (txtUser.getText()==null || txtUser.getText().trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "Preecha o usuario");
+                JOptionPane.showMessageDialog(null, Messager.USER_REQUIRED);
             } else {
                 if (txtPass.getText()==null || txtPass.getText().trim().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Preecha o senha");
+                    JOptionPane.showMessageDialog(null, Messager.PASS_REQUIRED);
                 } else {
                     if (txtCPF.getText().equals("   .   .   -  ")) {
                         JOptionPane.showMessageDialog(null, "Preecha o CPF");

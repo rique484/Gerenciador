@@ -6,7 +6,6 @@
 package com.app.gerecia.view;
 
 import com.app.gerecia.config.TempFileUser;
-import com.app.gerecia.model.Sale;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
 

@@ -121,7 +121,7 @@ public class User {
             } else {
                 JOptionPane.showMessageDialog(null, e);
             }
-            return null;
+            return false;
         }
     }
     

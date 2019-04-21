@@ -6,6 +6,7 @@
 package com.app.gerecia.model;
 
 import com.app.gerecia.config.ConfigDB;
+import com.app.gerecia.config.Messager;
 import com.app.gerecia.config.TempFileUser;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -18,15 +19,14 @@ import javax.swing.JOptionPane;
  *
  * @author rique
  */
-public class Authentication {
-    
-     private static final String USER_OR_PASS_ERR = "Usuario e/ou senha invalido(s)";
+public class Authentication { 
+    private static final String AUTH = "select * from user where user=? and pass=? ";
     
     public Boolean auth(String user,String pass){
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "select * from user where user=? and pass=? ";
+        String sql = AUTH;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -39,7 +39,7 @@ public class Authentication {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null,USER_OR_PASS_ERR);
+                JOptionPane.showMessageDialog(null,Messager.USER_OR_PASS_ERR);
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
