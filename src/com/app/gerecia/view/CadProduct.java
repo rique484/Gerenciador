@@ -41,7 +41,8 @@ public class CadProduct extends javax.swing.JFrame {
         txtValor = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         txtCodBar = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        chkPreparo = new javax.swing.JCheckBox();
+        txtIdBusca = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnListProd = new javax.swing.JButton();
@@ -85,6 +86,8 @@ public class CadProduct extends javax.swing.JFrame {
 
         txtCodBar.setEnabled(false);
 
+        chkPreparo.setText("Feito na Hora?");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -105,13 +108,15 @@ public class CadProduct extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rtDisplay)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rtPrateleira))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCodBar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtCodBar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(rtDisplay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rtPrateleira)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(chkPreparo)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -130,7 +135,8 @@ public class CadProduct extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rtDisplay)
-                    .addComponent(rtPrateleira))
+                    .addComponent(rtPrateleira)
+                    .addComponent(chkPreparo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -144,6 +150,11 @@ public class CadProduct extends javax.swing.JFrame {
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_search-70px_510861.png"))); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnListProd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnListProd.setText("Produtos cadastrados");
@@ -181,7 +192,7 @@ public class CadProduct extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
@@ -199,7 +210,7 @@ public class CadProduct extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1)
+                    .addComponent(txtIdBusca)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(btnListProd)))
@@ -217,7 +228,16 @@ public class CadProduct extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-
+        Product p = new Product();
+        p.setId(Integer.parseInt(txtIdBusca.getText()));
+        p.setNome(txtNome.getText());
+        p.setValor(Double.parseDouble(txtValor.getText()));
+        p.setCodBar(txtCodBar.getText());
+        if(chkInativo.isSelected()){p.setStatus(1);}else{p.setStatus(0);}
+        if(p.alterar().equals(true)){
+            dispose();
+            new CadProduct().setVisible(true);
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -236,8 +256,14 @@ public class CadProduct extends javax.swing.JFrame {
                 } else {
                     p.setStatus(0);
                 }
+                if(chkPreparo.isSelected()){
+                    p.setPreparo(1);
+                } else {
+                    p.setPreparo(0);
+                }
                 if (p.cadastroProduto() == true) {
-                    JOptionPane.showMessageDialog(null, "Cadastrado");
+                    dispose();
+                    new CadProduct().setVisible(true);
                 }
             }
         }
@@ -262,6 +288,29 @@ public class CadProduct extends javax.swing.JFrame {
         new ProductList().setVisible(true);
     }//GEN-LAST:event_btnListProdActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        Product p = new Product();
+        p.setId(Integer.parseInt(txtIdBusca.getText()));
+        if(p.search().equals(true)){
+            txtIdBusca.setEnabled(false);
+            btnBuscar.setEnabled(false);
+            btnCadastrar.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            txtNome.setText(p.getNome());
+            txtValor.setText(p.getValor().toString());
+            if(p.getCodBar().isEmpty()){  
+                rtDisplay.setSelected(true);
+                rtPrateleira.setSelected(false);
+            }else{   
+                txtCodBar.setEnabled(true);
+                rtPrateleira.setSelected(true);
+                rtDisplay.setSelected(false);
+                txtCodBar.setText(p.getCodBar());
+            }
+            
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
@@ -269,15 +318,16 @@ public class CadProduct extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnListProd;
     private javax.swing.JCheckBox chkInativo;
+    private javax.swing.JCheckBox chkPreparo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JRadioButton rtDisplay;
     private javax.swing.JRadioButton rtPrateleira;
     private javax.swing.JTextField txtCodBar;
+    private javax.swing.JTextField txtIdBusca;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtValor;
     // End of variables declaration//GEN-END:variables

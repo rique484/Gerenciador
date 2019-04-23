@@ -31,26 +31,57 @@ public class Home extends javax.swing.JFrame {
     private void initComponents() {
 
         btnAtendimento = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        btnRequests = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mConfig = new javax.swing.JMenuItem();
         mCadOperador = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnAtendimento.setBackground(new java.awt.Color(204, 204, 204));
         btnAtendimento.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnAtendimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/menu.png"))); // NOI18N
         btnAtendimento.setText("Atendimento");
+        btnAtendimento.setFocusPainted(false);
+        btnAtendimento.setRequestFocusEnabled(false);
         btnAtendimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtendimentoActionPerformed(evt);
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(204, 204, 204));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/scooter.png"))); // NOI18N
+        jButton1.setText("Delivery");
+
+        jButton2.setBackground(new java.awt.Color(204, 204, 204));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/money.png"))); // NOI18N
+        jButton2.setText("Caixa");
+
+        btnRequests.setBackground(new java.awt.Color(204, 204, 204));
+        btnRequests.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnRequests.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/fast-food (1).png"))); // NOI18N
+        btnRequests.setText("Pedidos");
+        btnRequests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestsActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Sistema");
 
+        mConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/gears.png"))); // NOI18N
         mConfig.setText("Arquivo de configuracao");
         mConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,6 +90,7 @@ public class Home extends javax.swing.JFrame {
         });
         jMenu1.add(mConfig);
 
+        mCadOperador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/membership.png"))); // NOI18N
         mCadOperador.setText("Cadastro de operadores");
         mCadOperador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,10 +102,26 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Relatorios");
+
+        jMenuItem2.setText("Lista de produtos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Operadores");
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Comadas");
+        jMenu2.add(jMenuItem4);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Cadastro");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/fast-food.png"))); // NOI18N
         jMenuItem1.setText("Produtos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,15 +140,25 @@ public class Home extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAtendimento)
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAtendimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRequests, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(249, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAtendimento)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(btnAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRequests, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,14 +183,28 @@ public class Home extends javax.swing.JFrame {
         new CadProduct().setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new ProductList().setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void btnRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestsActionPerformed
+        new Requests().setVisible(true);
+    }//GEN-LAST:event_btnRequestsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtendimento;
+    private javax.swing.JButton btnRequests;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem mCadOperador;
     private javax.swing.JMenuItem mConfig;
     // End of variables declaration//GEN-END:variables

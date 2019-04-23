@@ -8,6 +8,8 @@ package com.app.gerecia.view;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -17,10 +19,10 @@ public class OrderConfirmation extends javax.swing.JDialog {
 
     private Integer quant;
     private Integer idpedido;
-    private Integer idusuario = 1;
+    private Integer idusuario;
     private Integer idproduto;
     private Double valor;
-
+    private Integer comanda,q;
     /**
      * Creates new form OrderConfirmation
      */
@@ -63,6 +65,11 @@ public class OrderConfirmation extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,12 +116,19 @@ public class OrderConfirmation extends javax.swing.JDialog {
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         quant=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-        Double val = quant*valor;
+        Double val = quant*valor; 
         Order v = new Order();
-        if(v.orderInsert(val, quant, idproduto, idpedido,idusuario).equals(true)){
-            this.dispose();
+        Product p = new Product();
+        p.setId(idproduto);
+        p.search();
+        if(v.orderInsert(val, quant, idproduto, idpedido,idusuario,p.getPreparo()).equals(true)){
+            this.dispose(); 
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public void exportData(Product p) {
         valor = p.getValor();
@@ -124,6 +138,7 @@ public class OrderConfirmation extends javax.swing.JDialog {
         idusuario = Integer.parseInt(new TempFileUser().tempReadUser());
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;

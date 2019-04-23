@@ -23,7 +23,7 @@ public class Order {
     private static final String SELECT_ORDER = "select * from pedido where "
             + "num_comanda=? AND status=0 ";
     private static final String INSERT_ORDER = "insert into venda(valor,quanti"
-            + "dade,idproduto,idpedido,iduser) values(?,?,?,?,?)";
+            + "dade,idproduto,idpedido,iduser,status_preparo) values(?,?,?,?,?,?)";
     private static final String CREATE_ORDER = "insert into pedido(num_comanda,"
             + "status) values(?,0)";
     
@@ -32,7 +32,8 @@ public class Order {
     private Double valor_total;
     private Integer status;
     private Integer id;
-
+    private Integer status_preparo;
+ 
     public Integer getNumero_comanda() {
         return numero_comanda;
     }
@@ -65,6 +66,14 @@ public class Order {
         this.id = id;
     }
 
+    public Integer getStatus_preparo() {
+        return status_preparo;
+    }
+
+    public void setStatus_preparo(Integer status_preparo) {
+        this.status_preparo = status_preparo;
+    }
+
     public Boolean consulta() {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -76,7 +85,8 @@ public class Order {
             pst.setInt(1, numero_comanda);
             rs = pst.executeQuery();
             if (rs.next()) {
-                setId(rs.getInt(2));
+                setId(rs.getInt(1));
+                setNumero_comanda(rs.getInt(2));
                 conexao.close();
                 return true;
             } else {
@@ -89,7 +99,7 @@ public class Order {
     }
     
     public Boolean orderInsert(Double valor,Integer quantidade,Integer idproduto
-            ,Integer idpedido,Integer iduser){
+            ,Integer idpedido,Integer iduser,Integer status_preparo){
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER;
@@ -101,6 +111,7 @@ public class Order {
             pst.setInt(3, idproduto);
             pst.setInt(4, idpedido);
             pst.setInt(5, iduser);
+            pst.setInt(6, status_preparo);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
@@ -110,7 +121,7 @@ public class Order {
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
-
+            System.out.println(e);
             return false;
         }
     } 

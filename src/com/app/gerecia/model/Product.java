@@ -6,6 +6,7 @@
 package com.app.gerecia.model;
 
 import com.app.gerecia.config.ConfigDB;
+import com.app.gerecia.config.Messager;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +24,9 @@ public class Product {
     private Double valor;
     private String codBar;
     private Integer status;
-
+    private Integer preparo;
+    
+    
     public Integer getId() {
         return id;
     }
@@ -63,11 +66,45 @@ public class Product {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public Integer getPreparo() {
+        return preparo;
+    }
+
+    public void setPreparo(Integer preparo) {
+        this.preparo = preparo;
+    }
+    
+    public Boolean search() {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "select * from produto where idproduto=?";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                setNome(rs.getString(2));
+                setValor(rs.getDouble(3));
+                setCodBar(rs.getString(4));
+                setStatus(rs.getInt(5));
+                setPreparo(rs.getInt(6));
+                return true;
+            } else {
+                System.out.println("erro");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
     
     public Boolean cadastroProduto(){
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into produto(nome,valor_unt,cod_bar,status) values(?,?,?,?)";
+        String sql = "insert into produto(nome,valor_unt,cod_bar,status,preparo) values(?,?,?,?,?)";
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -75,9 +112,11 @@ public class Product {
             pst.setDouble(2, valor);
             pst.setString(3, codBar);
             pst.setInt(4, status);
+            pst.setInt(5, preparo);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
+                JOptionPane.showMessageDialog(null, Messager.SUSS_CAD);
                 return true;
             } else {
                 JOptionPane.showMessageDialog(null, "Erro");
@@ -94,13 +133,41 @@ public class Product {
         }
     }
     
+    public Boolean alterar() {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = "update produto set nome=?, valor_unt=?, cod_bar=?, status=? where idproduto=?";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, nome);
+            pst.setDouble(2, valor);
+            pst.setString(3, codBar);
+            pst.setInt(4, status);
+            pst.setInt(5, id);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                JOptionPane.showMessageDialog(null, Messager.ALT_CAD);
+                conexao.close();
+                return true;
+            } else {
+                System.out.println("erro");
+                JOptionPane.showMessageDialog(null, "Erro");
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
     public ResultSet advancedSearch(String busca){
                 Connection conexao = null;
                 PreparedStatement pst = null;
                 ResultSet rs = null;
                 String sql = "select idproduto as 'ID',nome as 'Nome', "
                         + "valor_unt as 'Valor' from produto where"
-                        + " idproduto like ? or cod_bar = ?";   
+                        + " idproduto like ? and status = 0 or "
+                        + "cod_bar = ? and status = 0";   
             try {
                 conexao = new ConfigDB().conector();
                 pst = conexao.prepareStatement(sql);
