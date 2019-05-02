@@ -47,6 +47,7 @@ public class CadUser extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
         chkADMIN = new javax.swing.JCheckBox();
         chkInativo = new javax.swing.JCheckBox();
+        chkCaixa = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         sldComissao = new javax.swing.JSlider();
         jLabel7 = new javax.swing.JLabel();
@@ -111,7 +112,7 @@ public class CadUser extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,6 +146,9 @@ public class CadUser extends javax.swing.JFrame {
         chkInativo.setText("Inativo");
         chkInativo.setEnabled(false);
 
+        chkCaixa.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        chkCaixa.setText("Caixa");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -158,20 +162,26 @@ public class CadUser extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtUser)
                     .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkADMIN, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(chkInativo, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(15, 15, 15))
+                    .addComponent(chkADMIN)
+                    .addComponent(chkCaixa)
+                    .addComponent(chkInativo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkADMIN))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(chkADMIN)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkCaixa)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -204,7 +214,7 @@ public class CadUser extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(sldComissao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lbComissao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lbComissao, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -253,18 +263,19 @@ public class CadUser extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGravar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGravar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(77, 77, 77)
                         .addComponent(jLabel8)))
@@ -315,7 +326,10 @@ public class CadUser extends javax.swing.JFrame {
                         u.setPass(txtPass.getText());
                         u.setComissao(sldComissao.getValue());
                         u.setCpf(txtCPF.getText());
-                        if(chkADMIN.isSelected()){u.setTipo(1);}else{u.setTipo(0);}
+                        if(chkADMIN.isSelected()){u.setTipo(1);}else{
+                            if(chkCaixa.isSelected()){u.setTipo(2);
+                            }else{u.setTipo(0);}}
+                        if(chkInativo.isSelected()){u.setStatus(1);}else{u.setStatus(0);}
                         Boolean lg = u.cadastro();
                         if (lg == true) {
                             this.dispose();
@@ -345,6 +359,8 @@ public class CadUser extends javax.swing.JFrame {
             txtUser.setText(u.getUser());
             txtPass.setText(u.getPass());
             if(u.getTipo()==1){chkADMIN.setSelected(true);}
+            if(u.getTipo()==2){chkCaixa.setSelected(true);}
+            if(u.getStatus()==1){chkInativo.setSelected(true);}
             int id;
             id = u.getIdUser();
             String idU = String.valueOf(id);
@@ -381,6 +397,10 @@ public class CadUser extends javax.swing.JFrame {
                         u.setPass(txtPass.getText());
                         u.setComissao(sldComissao.getValue());
                         u.setCpf(txtCPF.getText());
+                        if(chkADMIN.isSelected()){u.setTipo(1);}else{
+                            if(chkCaixa.isSelected()){u.setTipo(2);
+                            }else{u.setTipo(0);}}
+                        if(chkInativo.isSelected()){u.setStatus(1);}else{u.setStatus(0);}
                         Boolean lg = u.alterar();
                         if (lg == true) {
                             this.dispose();
@@ -398,6 +418,7 @@ public class CadUser extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnGravar;
     private javax.swing.JCheckBox chkADMIN;
+    private javax.swing.JCheckBox chkCaixa;
     private javax.swing.JCheckBox chkInativo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

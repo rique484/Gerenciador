@@ -14,13 +14,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import jdk.nashorn.internal.ir.BreakNode;
 
 /**
  *
  * @author rique
  */
 public class Authentication { 
-    private static final String AUTH = "select * from user where user=? and pass=? ";
+    private static final String AUTH = "select * from user where user=? and pass=?";
     
     public Boolean auth(String user,String pass){
         Connection conexao = null;
@@ -34,10 +35,16 @@ public class Authentication {
             pst.setString(2, pass);
             rs = pst.executeQuery();
             if (rs.next()) { 
-                String temp = String.valueOf(rs.getInt(1));
-                new TempFileUser().tempWriterUser(temp);
-                conexao.close();
-                return true;
+                if(rs.getInt(8)==1){
+                    JOptionPane.showMessageDialog(null,Messager.USER_INACTIVE);
+                    conexao.close();
+                    return false;
+                }else{
+                    String temp = String.valueOf(rs.getInt(1));
+                    new TempFileUser().tempWriterUser(temp);
+                    conexao.close();
+                    return true;
+                }  
             } else {
                 JOptionPane.showMessageDialog(null,Messager.USER_OR_PASS_ERR);
                 return false;

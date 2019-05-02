@@ -6,16 +6,21 @@
 package com.app.gerecia.model;
 
 import com.app.gerecia.config.ConfigDB;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author rique
  */
 public class Sale {
+    
+    private static final String ZERO_SALE = "update pedido set status=1 "
+                                                 + "where num_comanda=?";
     
     public ResultSet consultaSale(int idpedido){
         Connection conexao = null;
@@ -58,4 +63,27 @@ public class Sale {
         }
         return false;
     }  
+    
+    public Boolean ZeroSale(Integer numeroComanda){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = ZERO_SALE;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, numeroComanda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
 }

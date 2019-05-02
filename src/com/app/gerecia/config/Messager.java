@@ -21,4 +21,5 @@ public class Messager {
     public static final String VALUE_REQUIRED = "Preecha o valor";
     public static final String SUSS_CAD = "Cadastrado com sucesso";
     public static final String ALT_CAD = "Alterado com sucesso";
+    public static final String USER_INACTIVE = "Usuario Inativo";
 }

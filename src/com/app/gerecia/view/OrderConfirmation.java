@@ -8,8 +8,7 @@ package com.app.gerecia.view;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.sql.Date;
 
 /**
  *
@@ -17,10 +16,10 @@ import java.text.DecimalFormat;
  */
 public class OrderConfirmation extends javax.swing.JDialog {
 
-    private Integer quant;
-    private Integer idpedido;
+    private Integer quant,tipo;
+    private Integer idpedido, iddelivery;
     private Integer idusuario;
-    private Integer idproduto;
+    private Integer idproduto; 
     private Double valor;
     private Integer comanda,q;
     /**
@@ -49,14 +48,19 @@ public class OrderConfirmation extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Nome do produto:");
+
+        lbNomeProd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Quantidade");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
 
+        btnConfirmar.setBackground(new java.awt.Color(204, 204, 204));
+        btnConfirmar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/rate (1).png"))); // NOI18N
         btnConfirmar.setText("Confirmar");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +68,8 @@ public class OrderConfirmation extends javax.swing.JDialog {
             }
         });
 
+        btnCancelar.setBackground(new java.awt.Color(204, 204, 204));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,25 +110,46 @@ public class OrderConfirmation extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConfirmar)
-                    .addComponent(btnCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+        
+        
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        System.out.println(tipo);
+        if(tipo.equals(0)){
+            System.out.println("teste1");
         quant=Integer.parseInt(jComboBox1.getSelectedItem().toString());
         Double val = quant*valor; 
         Order v = new Order();
+        Date data = new Date(new java.util.Date().getTime());
+        v.setData(data);
         Product p = new Product();
         p.setId(idproduto);
         p.search();
         if(v.orderInsert(val, quant, idproduto, idpedido,idusuario,p.getPreparo()).equals(true)){
             this.dispose(); 
+        }
+        }else{
+            System.out.println("teste2");
+        quant=Integer.parseInt(jComboBox1.getSelectedItem().toString());
+        Double val = quant*valor; 
+        Order v = new Order();
+        Date data = new Date(new java.util.Date().getTime());
+        v.setData(data);
+        Product p = new Product();
+        p.setId(idproduto);
+        p.search();
+        if(v.orderInsertDelivery(val, quant, idproduto,idusuario,p.getPreparo(),iddelivery).equals(true)){
+            this.dispose(); 
+        }
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
@@ -130,11 +157,21 @@ public class OrderConfirmation extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    public void exportData(Product p) {
+    public void exportData(Product p,Integer tipoTela) {
+        tipo = tipoTela;
         valor = p.getValor();
         idproduto = p.getId();
         lbNomeProd.setText(p.getNome());
         idpedido = Integer.parseInt(new TempFileUser().tempReadOrder());
+        idusuario = Integer.parseInt(new TempFileUser().tempReadUser());
+    }
+    
+    public void exportDataDelivery(Product p,Integer tipoTela) {
+        tipo = tipoTela;
+        valor = p.getValor();
+        idproduto = p.getId();
+        lbNomeProd.setText(p.getNome());
+        iddelivery = Integer.parseInt(new TempFileUser().tempReadOrder());
         idusuario = Integer.parseInt(new TempFileUser().tempReadUser());
     }
 

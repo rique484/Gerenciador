@@ -142,6 +142,7 @@ public class User {
                 setIdUser(rs.getInt(1));
                 setTipo(rs.getInt(7));
                 setPass(rs.getString(5));
+                setStatus(rs.getInt(8));
                 return true;
             } else {
                 System.out.println("erro");
@@ -155,7 +156,7 @@ public class User {
         Connection conexao = null;
         PreparedStatement pst = null;
 
-        String sql = "update user set cpf=?, nome=?, user=?, pass=?, comissao=? where iduser=?";
+        String sql = "update user set cpf=?, nome=?, user=?, pass=?, comissao=?, admin=?, status=? where iduser=?";
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -164,7 +165,9 @@ public class User {
             pst.setString(3, user);
             pst.setString(4, pass);
             pst.setInt(5, comissao);
-            pst.setInt(6, idUser);
+            pst.setInt(6, tipo);
+            pst.setInt(7, status);
+            pst.setInt(8, idUser);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();

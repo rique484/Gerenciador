@@ -29,7 +29,7 @@ public class ConfigDB {
       String driver = "com.mysql.jdbc.Driver";
       String url="jdbc:mysql:"+caminho+"/dbcentral";
       String user="root";
-      String password="";
+      String password="1234";
         try {
             Class.forName(driver);
             conexao = DriverManager.getConnection(url, user, password);

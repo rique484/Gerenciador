@@ -5,6 +5,7 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Manager;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
@@ -12,29 +13,29 @@ import com.app.gerecia.model.Sale;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 import com.app.gerecia.config.Messager;
+
 /**
  *
  * @author rique
  */
 public class Attendance extends javax.swing.JFrame {
- 
+
     private int idSelect;
-    
+
     public Attendance() {
-        initComponents();       
+        initComponents();
     }
-    
-    
-    
-    public void orderList(int idcomanda){    
-    tblItens.setModel(DbUtils.resultSetToTableModel( new Sale().consultaSale(idcomanda)));  
-    
-    double count=0;
-    for (int i=0; i<=tblItens.getRowCount()-1;i++) {
-    count+=Double.parseDouble(tblItens.getValueAt(i, 4).toString());
+
+    public void orderList(int idcomanda) {
+        tblItens.setModel(DbUtils.resultSetToTableModel(new Sale()
+                .consultaSale(idcomanda)));
+        double count = 0;
+        for (int i = 0; i <= tblItens.getRowCount() - 1; i++) {
+            count += Double.parseDouble(tblItens.getValueAt(i, 4).toString());
+        }
+        lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
     }
-    lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,6 +66,7 @@ public class Attendance extends javax.swing.JFrame {
         btnReload = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
+        btnZero = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -176,10 +178,10 @@ public class Attendance extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69)
                         .addComponent(btnListProduct)))
                 .addContainerGap())
         );
@@ -190,11 +192,10 @@ public class Attendance extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnListProduct)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(txtBuscarProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtBuscarProd))
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -298,6 +299,22 @@ public class Attendance extends javax.swing.JFrame {
         btnFinalizar.setForeground(new java.awt.Color(51, 0, 0));
         btnFinalizar.setText("Finalizar");
         btnFinalizar.setEnabled(false);
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
+
+        btnZero.setBackground(new java.awt.Color(204, 204, 204));
+        btnZero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnZero.setForeground(new java.awt.Color(51, 0, 0));
+        btnZero.setText("Fechar comanda zerada");
+        btnZero.setEnabled(false);
+        btnZero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZeroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -310,7 +327,9 @@ public class Attendance extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnZero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -324,11 +343,17 @@ public class Attendance extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSair)
-                    .addComponent(btnFinalizar))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(btnSair)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFinalizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnZero)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
@@ -339,7 +364,7 @@ public class Attendance extends javax.swing.JFrame {
         Integer comanda = Integer.parseInt(txtBuscarCom.getText());
         Order p = new Order();
         p.setNumero_comanda(comanda);
-        if(p.consulta()==true){
+        if (p.consulta() == true) {
             txtBuscarCom.setEnabled(false);
             btnBuscar.setEnabled(false);
             txtBuscarProd.setEnabled(true);
@@ -348,22 +373,34 @@ public class Attendance extends javax.swing.JFrame {
             String temp = String.valueOf(p.getId());
             orderList(p.getNumero_comanda());
             new TempFileUser().tempWriterOrder(temp);
-        }else{
+            String check = new TempFileUser().tempReadUser();
+            if (new Manager().checkADMIN(check) == 1
+                    || new Manager().checkADMIN(check) == 2) {
+                btnFinalizar.setEnabled(true);
+                btnZero.setEnabled(true);
+            }
+        } else {
             System.out.println("teste nova comanda");
-            int val = JOptionPane.showConfirmDialog(null, Messager.NEW_ORDER ,
+            int val = JOptionPane.showConfirmDialog(null, Messager.NEW_ORDER,
                     "ALERTA", JOptionPane.OK_CANCEL_OPTION);
             if (val == 0) {
                 p.setNumero_comanda(Integer.parseInt(txtBuscarCom.getText()));
-                if(p.orderCreate()==true){
-                    if(p.consulta()==true){
-                    txtBuscarCom.setEnabled(false);
-                    btnBuscar.setEnabled(false);
-                    txtBuscarProd.setEnabled(true);
-                    btnReload.setEnabled(true);
-                    btnNew.setEnabled(true);
-                    String temp = String.valueOf(p.getId());
-                    orderList(p.getNumero_comanda());
-                    new TempFileUser().tempWriterOrder(temp);
+                if (p.orderCreate() == true) {
+                    if (p.consulta() == true) {
+                        txtBuscarCom.setEnabled(false);
+                        btnBuscar.setEnabled(false);
+                        txtBuscarProd.setEnabled(true);
+                        btnReload.setEnabled(true);
+                        btnNew.setEnabled(true);
+                        String temp = String.valueOf(p.getId());
+                        orderList(p.getNumero_comanda());
+                        new TempFileUser().tempWriterOrder(temp);
+                        String check = new TempFileUser().tempReadUser();
+                        if (new Manager().checkADMIN(check) == 1
+                                || new Manager().checkADMIN(check) == 2) {
+                            btnFinalizar.setEnabled(true);
+                            btnZero.setEnabled(true);
+                        }
                     }
                 }
             }
@@ -375,24 +412,22 @@ public class Attendance extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void txtBuscarProdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarProdKeyReleased
-        tblBusca.setModel(DbUtils.resultSetToTableModel(new Product().advancedSearch(txtBuscarProd.getText())));
+        tblBusca.setModel(DbUtils.resultSetToTableModel(new Product()
+                .advancedSearch(txtBuscarProd.getText())));
     }//GEN-LAST:event_txtBuscarProdKeyReleased
 
     private void tblBuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBuscaMouseClicked
-        int setar = tblBusca.getSelectedRow();   
+        int setar = tblBusca.getSelectedRow();
         Product p = new Product();
-        p.setId(Integer.parseInt(tblBusca.getModel().getValueAt(setar, 0).toString()));
+        p.setId(Integer.parseInt(tblBusca.getModel()
+                .getValueAt(setar, 0).toString()));
         p.setNome(tblBusca.getModel().getValueAt(setar, 1).toString());
-        p.setValor(Double.parseDouble(tblBusca.getModel().getValueAt(setar, 2).toString()));
-        
-        /*System.out.println(p.getId()); 
-        System.out.println(p.getNome());
-        System.out.println(p.getValor());*/
-        
-        OrderConfirmation atc = new OrderConfirmation(this,true);
-        atc.exportData(p);
-        atc.setVisible(true); 
-        
+        p.setValor(Double.parseDouble(tblBusca.getModel()
+                .getValueAt(setar, 2).toString()));
+        OrderConfirmation atc = new OrderConfirmation(this, true);
+        atc.exportData(p, 0);
+        atc.setVisible(true);
+
     }//GEN-LAST:event_tblBuscaMouseClicked
 
     private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
@@ -405,14 +440,15 @@ public class Attendance extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void tblItensMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItensMouseClicked
-        int setar = tblItens.getSelectedRow();       
-        idSelect  = Integer.parseInt(tblItens.getModel().getValueAt(setar, 0).toString());
-        btnRemove.setEnabled(true);       
+        int setar = tblItens.getSelectedRow();
+        idSelect = Integer.parseInt(tblItens.getModel()
+                .getValueAt(setar, 0).toString());
+        btnRemove.setEnabled(true);
     }//GEN-LAST:event_tblItensMouseClicked
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         Sale s = new Sale();
-        if(s.SaleCancel(idSelect).equals(true)){
+        if (s.SaleCancel(idSelect).equals(true)) {
             System.out.println("ok");
             orderList(Integer.parseInt(txtBuscarCom.getText()));
             btnRemove.setEnabled(false);
@@ -424,6 +460,25 @@ public class Attendance extends javax.swing.JFrame {
         new ProductList().setVisible(true);
     }//GEN-LAST:event_btnListProductActionPerformed
 
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        if (lbValorTotal.getText().equals("R$ 0.0")) {
+            JOptionPane.showMessageDialog(null, "Comanda sem venda");
+        } else {
+            new Cashier().setVisible(true);
+        }
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
+    private void btnZeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZeroActionPerformed
+        if (lbValorTotal.getText().equals("R$ 0.0")) {
+            new Sale().ZeroSale(Integer.parseInt(txtBuscarCom.getText()));
+            dispose();
+            new Attendance().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Comanda com venda");
+        }
+
+    }//GEN-LAST:event_btnZeroActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -433,6 +488,7 @@ public class Attendance extends javax.swing.JFrame {
     private javax.swing.JButton btnReload;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnZero;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

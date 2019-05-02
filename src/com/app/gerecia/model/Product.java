@@ -104,7 +104,8 @@ public class Product {
     public Boolean cadastroProduto(){
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into produto(nome,valor_unt,cod_bar,status,preparo) values(?,?,?,?,?)";
+        String sql = "insert into produto(nome,valor_unt,cod_bar,status,preparo)"
+                + " values(?,?,?,?,?)";
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
