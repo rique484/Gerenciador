@@ -155,7 +155,6 @@ public class User {
     public Boolean alterar() {
         Connection conexao = null;
         PreparedStatement pst = null;
-
         String sql = "update user set cpf=?, nome=?, user=?, pass=?, comissao=?, admin=?, status=? where iduser=?";
         try {
             conexao = new ConfigDB().conector();

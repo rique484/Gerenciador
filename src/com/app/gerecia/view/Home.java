@@ -105,6 +105,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/find.png"))); // NOI18N
         jButton3.setText("Consultar Valor");
 
@@ -246,11 +247,11 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Delivery().setVisible(true);
+        new SelectDelivery().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaixaActionPerformed
-       new Attendance().setVisible(true);
+       new Cashier().setVisible(true);
     }//GEN-LAST:event_btnCaixaActionPerformed
 
 

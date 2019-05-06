@@ -19,8 +19,10 @@ import javax.swing.JOptionPane;
  */
 public class Sale {
     
-    private static final String ZERO_SALE = "update pedido set status=1 "
-                                                 + "where num_comanda=?";
+    private static final String ZERO_SALE = "update "
+            + "pedido set status=1 where num_comanda=?";
+    private static final String UPDATE1_ORDER_PREPARED = "update "
+            + "venda set status_preparo=2 where idvenda=?";
     
     public ResultSet consultaSale(int idpedido){
         Connection conexao = null;
@@ -35,9 +37,27 @@ public class Sale {
         try {
          pst = conexao.prepareStatement(sql);
          pst.setInt(1, idpedido);
-         rs  = pst.executeQuery();  
-         //jTable2.setModel(DbUtils.resultSetToTableModel(rs));
-         //conexao.close();
+         rs  = pst.executeQuery();     
+            return rs;
+        } catch (SQLException e) {
+            return null;
+        }       
+    }
+    
+    public ResultSet consultaSaleDelivery(int tel){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        conexao = new ConfigDB().conector();
+        String sql = "select idvenda as 'Venda',nome as 'Nome' ,valor_unt as 'Valor Unitario',"
+                + "quantidade as 'Quantidade', valor as 'Valor total' from produto inner join venda on "
+                + "produto.idproduto = venda.idproduto inner join Delivery on "
+                + "delivery.iddelivery = venda.iddelivery where delivery.telefone = ? and "
+                + "delivery.status=0";
+        try {
+         pst = conexao.prepareStatement(sql);
+         pst.setInt(1, tel);
+         rs  = pst.executeQuery();     
             return rs;
         } catch (SQLException e) {
             return null;
@@ -86,4 +106,25 @@ public class Sale {
         }
     }
     
+    public Boolean updatePreparo(Integer venda){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = UPDATE1_ORDER_PREPARED;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, venda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                System.out.println("erro");
+                JOptionPane.showMessageDialog(null, "Erro");
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 }

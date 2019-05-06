@@ -93,7 +93,8 @@ public class Product {
                 setPreparo(rs.getInt(6));
                 return true;
             } else {
-                System.out.println("erro");
+                JOptionPane.showMessageDialog(null, Messager.ITEM_NOT);
+                return false;
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -137,7 +138,8 @@ public class Product {
     public Boolean alterar() {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "update produto set nome=?, valor_unt=?, cod_bar=?, status=? where idproduto=?";
+        String sql = "update produto set nome=?, valor_unt=?, cod_bar=?, "
+                + "status=?,preparo=? where idproduto=?";
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -145,7 +147,8 @@ public class Product {
             pst.setDouble(2, valor);
             pst.setString(3, codBar);
             pst.setInt(4, status);
-            pst.setInt(5, id);
+            pst.setInt(5, preparo);
+            pst.setInt(6, id);
             int add = pst.executeUpdate();
             if (add > 0) {
                 JOptionPane.showMessageDialog(null, Messager.ALT_CAD);

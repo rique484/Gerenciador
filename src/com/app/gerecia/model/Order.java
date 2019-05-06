@@ -32,7 +32,12 @@ public class Order {
             + "status) values(?,0)";
     private static final String CREATE_ORDER_DELIVERY = "insert into delivery(telefone,"
             + "status) values(?,0)";
-    
+    private static final String CREATE_PAY_DELIVERY = "insert into pagtdelivery"
+            + "(iddelivery,cartaodb,cartaocd,dinheiro,troco_valor) values(?,?,?,?,?)";
+    private static final String CREATE_DESC_DELIVERY = "insert into obsdelivery"
+            + "(obs,iddelivery) values(?,?)";
+    private static final String UPDATE1_ORDER_DELIVERY = "update delivery set "
+            + "status=1 where iddelivery=?";
     
     private Integer numero_comanda;
     private Integer numero_contato;
@@ -204,6 +209,57 @@ public class Order {
         }
     } 
     
+    public Boolean DeliveryPay(Integer id,Integer debt,Integer crt,
+            Integer dinheiro,Double troco){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = CREATE_PAY_DELIVERY;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            pst.setInt(2, debt);
+            pst.setInt(3, crt);
+            pst.setInt(4, dinheiro);
+            pst.setDouble(5, troco);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return false;
+        } 
+    }
+    
+    public Boolean DeliveryObs(String obs,Integer id){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = CREATE_DESC_DELIVERY;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, obs);
+            pst.setInt(2, id);
+            
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return false;
+        } 
+    }
+    
     public Boolean orderCreate(){
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -246,4 +302,47 @@ public class Order {
             return false;
         }
     }
+    
+    public Boolean orderUpdate1(Integer protocolo){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = UPDATE1_ORDER_DELIVERY;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, protocolo);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                System.out.println("erro");
+                JOptionPane.showMessageDialog(null, "Erro");
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public ResultSet deliverySearch(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        conexao = new ConfigDB().conector();
+        String sql = "select iddelivery as 'Protocolo',delivery.telefone as 'Contato',"
+                + "datahora as 'Data e Hora',nome as 'Cliente',cep as 'CEP' "
+                + "from delivery inner join clientes on delivery.telefone = clientes.telefone "
+                + "where delivery.status = 1";
+        try {
+         pst = conexao.prepareStatement(sql);
+         rs  = pst.executeQuery();     
+            return rs;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } 
+    }
+
 }
+

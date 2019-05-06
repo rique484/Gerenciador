@@ -5,16 +5,27 @@
  */
 package com.app.gerecia.model;
 
+import com.app.gerecia.config.ConfigDB;
+import com.app.gerecia.config.Messager;
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author rique
  */
 public class Customer {
-    
+    private static final String SELECT_CL = "select * from clientes where telefone = ?";
+    private static final String INSERT_CL = "insert into clientes"
+                    + "(nome,cep,endereco,numero,telefone) values(?,?,?,?,?)";
     private Integer idcliente;
     private String nome;
     private Integer cep;
-    private String enredeco;
+    private String endereco;
     private Integer numero;
     private Integer telefone;
 
@@ -42,12 +53,12 @@ public class Customer {
         this.cep = cep;
     }
 
-    public String getEnredeco() {
-        return enredeco;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEnredeco(String enredeco) {
-        this.enredeco = enredeco;
+    public void setEndereco(String enredeco) {
+        this.endereco = enredeco;
     }
 
     public Integer getNumero() {
@@ -68,6 +79,60 @@ public class Customer {
     
     public void insertCustomer(){
         
+    }
+    
+    public Boolean search(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = SELECT_CL;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, telefone);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                setIdcliente(rs.getInt(1));
+                setNome(rs.getString(2));
+                setCep(rs.getInt(3));
+                setEndereco(rs.getString(4));
+                setNumero(rs.getInt(5));
+                conexao.close();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e); 
+            return false;
+        }
+    }
+    
+    public Boolean cadcliente(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = INSERT_CL;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, nome);
+            pst.setInt(2, cep);
+            pst.setString(3, endereco);
+            pst.setInt(4, numero);
+            pst.setInt(5, telefone);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                JOptionPane.showMessageDialog(null, Messager.SUSS_CAD);
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return false;
+        }
     }
     
 }

@@ -6,57 +6,118 @@
 package com.app.gerecia.view;
 
 import com.app.gerecia.config.ConfigDB;
+import com.app.gerecia.config.Messager;
+import com.app.gerecia.config.Print;
 import com.app.gerecia.model.Sale;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
 /**
  *
  * @author rique
  */
-public class Requests extends javax.swing.JFrame {
+public final class Requests extends javax.swing.JFrame {
 
+    private static final String LIST_DELIVERY = "select venda.idvenda as 'Venda',delivery.iddelivery as 'Protocolo',"
+            + "nome as 'Nome' ,quantidade as 'Quantidade' from produto "
+            + "inner join venda on produto.idproduto = venda.idproduto "
+            + "inner join delivery on delivery.iddelivery = venda.iddelivery "
+            + "where status_preparo = 1 and delivery.status = 1";
+    private static final String LIST_INTERNAL = "select venda.idvenda as 'Venda', num_comanda as 'Comanda',nome as 'Nome' ,"
+            + "quantidade as 'Quantidade' from produto inner join venda on "
+            + "produto.idproduto = venda.idproduto inner join pedido on "
+            + "pedido.idpedido = venda.idpedido where status_preparo = 1";
+    private Thread th;
+    private Integer i;
+    
     public Requests() {
         initComponents();
-        tblRes.setEnabled(false);
-        r();  
-
+        listDelivery();
+        listInternal();
+        autoReload().start();
     }
 
-    public void r(){
-        Connection conexao = null;
-                    PreparedStatement pst = null;
-                    ResultSet rs = null;
-                    conexao = new ConfigDB().conector();
-                    String sql = "select num_comanda as 'Comanda',nome as 'Nome' ,"
-                            + "quantidade as 'Quantidade' from produto inner join venda on "
-                            + "produto.idproduto = venda.idproduto inner join pedido on "
-                            + "pedido.idpedido = venda.idpedido where status_preparo = 1";
-                    try {
-                        pst = conexao.prepareStatement(sql);
-                        rs = pst.executeQuery();
-                        tblRes.setModel(DbUtils.resultSetToTableModel(rs));
-                        conexao.close();
-                    } catch (SQLException e) {
+    public Thread autoReload() {
+        th = new Thread(t1);
+        return th;
+    }
+
+    private final Runnable t1 = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                for (i = 0; i < 10; i++) {
+                    Thread.sleep(1000);
+                    System.out.println(i);
+                    if (i == 9) {
+                        listDelivery();
+                        listInternal();
+                        i = 0;
                     }
+                }
+            } catch (InterruptedException e) {
+            }
+        }
+    };
+
+    public void listInternal() {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        conexao = new ConfigDB().conector();
+        String sql = LIST_INTERNAL;
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblRes.setModel(DbUtils.resultSetToTableModel(rs));
+            conexao.close();
+        } catch (SQLException e) {
+
+        }
     }
-    
+
+    public void listDelivery() {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        conexao = new ConfigDB().conector();
+        String sql = LIST_DELIVERY;
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblDelivery.setModel(DbUtils.resultSetToTableModel(rs));
+            conexao.close();
+        } catch (SQLException e) {
+
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRes = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnReload = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDelivery = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
-        tblRes.setAutoCreateRowSorter(true);
         tblRes.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
-        tblRes.setForeground(new java.awt.Color(51, 0, 0));
+        tblRes.setForeground(new java.awt.Color(51, 51, 51));
         tblRes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -68,48 +129,141 @@ public class Requests extends javax.swing.JFrame {
 
             }
         ));
-        tblRes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tblRes);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_agt_reload_18517 (1).png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        tblRes.setDragEnabled(true);
+        tblRes.setRowSorter(null);
+        tblRes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblResMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(tblRes);
+
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_agt_reload_18517 (1).png"))); // NOI18N
+        btnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadActionPerformed(evt);
+            }
+        });
+
+        tblDelivery.setFont(new java.awt.Font("Tw Cen MT", 1, 18)); // NOI18N
+        tblDelivery.setForeground(new java.awt.Color(51, 51, 51));
+        tblDelivery.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        tblDelivery.setDragEnabled(true);
+        tblDelivery.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDeliveryMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblDelivery);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText("Pedidos Internos");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setText("Pedidos Delivery");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 3, 16)); // NOI18N
+        jLabel3.setText("SYScon");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel1))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        r();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
+        listDelivery();
+        listInternal();
+    }//GEN-LAST:event_btnReloadActionPerformed
+
+    private void tblResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResMouseClicked
+        int setar = tblRes.getSelectedRow();
+        th.interrupt();
+        int val = JOptionPane.showConfirmDialog(null, Messager.PREPARED,
+                "ALERTA", JOptionPane.OK_CANCEL_OPTION);
+        if (val == 0) {
+            new Sale().updatePreparo(Integer.parseInt(tblRes.getModel().getValueAt(setar, 0).toString()));
+            listInternal();
+        }
+        i=0;
+        autoReload().start();
+    }//GEN-LAST:event_tblResMouseClicked
+
+    private void tblDeliveryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDeliveryMouseClicked
+        int setar = tblDelivery.getSelectedRow();
+        th.interrupt();
+        int val = JOptionPane.showConfirmDialog(null, Messager.PREPARED,
+                "ALERTA", JOptionPane.OK_CANCEL_OPTION);
+        if (val == 0) {
+            new Print().printRequest(Integer.parseInt(tblDelivery.getModel().getValueAt(setar, 1).toString()),
+                    Integer.parseInt(tblDelivery.getModel().getValueAt(setar, 0).toString()));
+            new Sale().updatePreparo(Integer.parseInt(tblDelivery.getModel().getValueAt(setar, 0).toString()));
+            listDelivery();
+        }
+        i=0;
+        autoReload().start();
+    }//GEN-LAST:event_tblDeliveryMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        i=0;
+        th.interrupt();
+    }//GEN-LAST:event_formWindowClosed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnReload;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tblDelivery;
     private javax.swing.JTable tblRes;
     // End of variables declaration//GEN-END:variables
 }

@@ -48,10 +48,12 @@ public class CadProduct extends javax.swing.JFrame {
         btnListProd = new javax.swing.JButton();
         btnCadastrar = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro de Produtos");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Cadastrar Produto"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "Cadastrar Produto"));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Nome");
@@ -147,6 +149,7 @@ public class CadProduct extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("ID");
 
+        btnBuscar.setBackground(new java.awt.Color(204, 204, 204));
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_search-70px_510861.png"))); // NOI18N
         btnBuscar.setText("Buscar");
@@ -156,6 +159,7 @@ public class CadProduct extends javax.swing.JFrame {
             }
         });
 
+        btnListProd.setBackground(new java.awt.Color(204, 204, 204));
         btnListProd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnListProd.setText("Produtos cadastrados");
         btnListProd.addActionListener(new java.awt.event.ActionListener() {
@@ -164,6 +168,7 @@ public class CadProduct extends javax.swing.JFrame {
             }
         });
 
+        btnCadastrar.setBackground(new java.awt.Color(204, 204, 204));
         btnCadastrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -172,12 +177,23 @@ public class CadProduct extends javax.swing.JFrame {
             }
         });
 
+        btnAlterar.setBackground(new java.awt.Color(204, 204, 204));
         btnAlterar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setBackground(new java.awt.Color(204, 204, 204));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -198,7 +214,8 @@ public class CadProduct extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addComponent(btnListProd))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -219,7 +236,8 @@ public class CadProduct extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
-                    .addComponent(btnAlterar))
+                    .addComponent(btnAlterar)
+                    .addComponent(btnCancelar))
                 .addGap(12, 12, 12))
         );
 
@@ -234,6 +252,7 @@ public class CadProduct extends javax.swing.JFrame {
         p.setValor(Double.parseDouble(txtValor.getText()));
         p.setCodBar(txtCodBar.getText());
         if(chkInativo.isSelected()){p.setStatus(1);}else{p.setStatus(0);}
+        if(chkPreparo.isSelected()){p.setPreparo(1);} else {p.setPreparo(0);}
         if(p.alterar().equals(true)){
             dispose();
             new CadProduct().setVisible(true);
@@ -292,12 +311,15 @@ public class CadProduct extends javax.swing.JFrame {
         Product p = new Product();
         p.setId(Integer.parseInt(txtIdBusca.getText()));
         if(p.search().equals(true)){
+            btnCancelar.setEnabled(true);
             txtIdBusca.setEnabled(false);
             btnBuscar.setEnabled(false);
             btnCadastrar.setEnabled(false);
             btnAlterar.setEnabled(true);
             txtNome.setText(p.getNome());
             txtValor.setText(p.getValor().toString());
+            if(p.getStatus()==1){chkInativo.setSelected(true);}
+            if(p.getPreparo()==1){chkPreparo.setSelected(true);}
             if(p.getCodBar().isEmpty()){  
                 rtDisplay.setSelected(true);
                 rtPrateleira.setSelected(false);
@@ -306,16 +328,20 @@ public class CadProduct extends javax.swing.JFrame {
                 rtPrateleira.setSelected(true);
                 rtDisplay.setSelected(false);
                 txtCodBar.setText(p.getCodBar());
-            }
-            
+            }   
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnListProd;
     private javax.swing.JCheckBox chkInativo;
     private javax.swing.JCheckBox chkPreparo;

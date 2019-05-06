@@ -11,6 +11,8 @@ package com.app.gerecia.config;
  */
 public class Messager {
     public static final String NEW_ORDER = "Deseja abrir uma nova comada?";
+    public static final String NEW_DELIVERY = "Deseja fazer um delivery?";
+    public static final String NEW_DELIVERY_CAD = "Deseja cadastrar um novo cliente?";
     public static final String FAIL_CONN = "Sem conexao com base de dados, "
             + "verificar conexao com o banco de dados ou se a configuracao esta "
             + "correta";
@@ -22,4 +24,6 @@ public class Messager {
     public static final String SUSS_CAD = "Cadastrado com sucesso";
     public static final String ALT_CAD = "Alterado com sucesso";
     public static final String USER_INACTIVE = "Usuario Inativo";
+    public static final String ITEM_NOT = "Produto nao localizado";
+    public static final String PREPARED = "Deseja finalizar o preparo?";
 }
