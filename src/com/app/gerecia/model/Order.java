@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,24 +21,28 @@ import javax.swing.JOptionPane;
  */
 public class Order {
 
+    private static final String SELECT_ORDER_ALL = "select idpedido as 'Venda',"
+            + "num_comanda as 'Comanda' from pedido where status=0";
     private static final String SELECT_ORDER = "select * from pedido where "
             + "num_comanda=? AND status=0 ";
     private static final String SELECT_ORDER_DELIVERY = "select * from delivery where "
             + "telefone=? AND status=0 ";
     private static final String INSERT_ORDER = "insert into venda(valor,quanti"
-            + "dade,idproduto,idpedido,iduser,status_preparo,data) values(?,?,?,?,?,?,?)";
+            + "dade,idproduto,idpedido,iduser,status_preparo,data,comiss) values(?,?,?,?,?,?,?,?)";
     private static final String INSERT_ORDER_DELIVERY = "insert into venda(valor,quanti"
             + "dade,idproduto,iduser,status_preparo,data,iddelivery) values(?,?,?,?,?,?,?)";
     private static final String CREATE_ORDER = "insert into pedido(num_comanda,"
-            + "status) values(?,0)";
+            + "status,data) values(?,0,?)";
     private static final String CREATE_ORDER_DELIVERY = "insert into delivery(telefone,"
-            + "status) values(?,0)";
+            + "status,data) values(?,0,?)";
     private static final String CREATE_PAY_DELIVERY = "insert into pagtdelivery"
             + "(iddelivery,cartaodb,cartaocd,dinheiro,troco_valor) values(?,?,?,?,?)";
     private static final String CREATE_DESC_DELIVERY = "insert into obsdelivery"
             + "(obs,iddelivery) values(?,?)";
     private static final String UPDATE1_ORDER_DELIVERY = "update delivery set "
             + "status=1 where iddelivery=?";
+    private static final String SELECT_ORDER_DELIVERY_PAY = "select * from delivery where "
+            + "telefone=? AND status=0 ";
     
     private Integer numero_comanda;
     private Integer numero_contato;
@@ -46,6 +51,7 @@ public class Order {
     private Integer id;
     private Integer status_preparo;
     private Date data;
+    
  
     public Integer getNumero_comanda() {
         return numero_comanda;
@@ -127,6 +133,27 @@ public class Order {
         }
     }
     
+    public Boolean consultaGeral() {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = SELECT_ORDER_ALL;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                conexao.close();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e); 
+            return false;
+        }
+    }
+    
     public Boolean consultaDelivery() {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -152,7 +179,7 @@ public class Order {
     }
     
     public Boolean orderInsert(Double valor,Integer quantidade,Integer idproduto
-            ,Integer idpedido,Integer iduser,Integer status_preparo){
+            ,Integer idpedido,Integer iduser,Integer status_preparo,Integer comiss){
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER;
@@ -166,6 +193,7 @@ public class Order {
             pst.setInt(5, iduser);
             pst.setInt(6, status_preparo);
             pst.setDate(7, data);
+            pst.setInt(8, comiss);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
@@ -268,6 +296,7 @@ public class Order {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, numero_comanda);
+            pst.setDate(2, Date.valueOf(LocalDate.now()));
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
@@ -289,6 +318,7 @@ public class Order {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);  
             pst.setInt(1, numero_contato);
+            pst.setDate(2,Date.valueOf(LocalDate.now()));
             int add = pst.executeUpdate();
             if (add > 0) {    
                 conexao.close();
@@ -344,5 +374,79 @@ public class Order {
         } 
     }
 
+    public Boolean orderClose(Double valor,Integer modopagt,Integer operador,Integer comanda){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = "update pedido set valor_total=?, status=1, modo_pagt=?, "
+                + "idcaixa=? where num_comanda=? and status=0";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setDouble(1, valor);
+            pst.setDouble(2, modopagt);
+            pst.setInt(3, operador);
+            pst.setInt(4, comanda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                
+                conexao.close();
+                return true;
+            } else {
+                System.out.println("erro");
+
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public Boolean orderDeliveryClose(Double valor,Integer modopagt,Integer operador,Integer comanda){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = "update delivery set valor_total=?, status=2, modo_pagt=?, "
+                + "idcaixa=? where iddelivery=? and status=1";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setDouble(1, valor);
+            pst.setDouble(2, modopagt);
+            pst.setInt(3, operador);
+            pst.setInt(4, comanda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                
+                conexao.close();
+                return true;
+            } else {
+                System.out.println("erro");
+
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public ResultSet consultaPayDelivery(Integer protocolo){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        conexao = new ConfigDB().conector();
+        String sql = "select idvenda as 'Venda',nome as 'Nome' ,valor_unt as 'Valor Unitario',"
+                + "quantidade as 'Quantidade', valor as 'Valor total' from produto inner join venda on "
+                + "produto.idproduto = venda.idproduto inner join Delivery on "
+                + "delivery.iddelivery = venda.iddelivery where delivery.iddelivery = ? and "
+                + "delivery.status=1";
+        try {
+         pst = conexao.prepareStatement(sql);
+         pst.setInt(1, protocolo);
+         rs  = pst.executeQuery();     
+            return rs;
+        } catch (SQLException e) {
+            return null;
+        }       
+    }
+    
 }
 

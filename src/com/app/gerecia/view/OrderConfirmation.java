@@ -8,6 +8,7 @@ package com.app.gerecia.view;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Product;
+import com.app.gerecia.model.User;
 import java.sql.Date;
 
 /**
@@ -123,6 +124,8 @@ public class OrderConfirmation extends javax.swing.JDialog {
         
         
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        User u = new User();
+        u.consultarViaId(Integer.parseUnsignedInt(new TempFileUser().tempReadUser()));
         System.out.println(tipo);
         if(tipo.equals(0)){
             System.out.println("teste1");
@@ -134,7 +137,7 @@ public class OrderConfirmation extends javax.swing.JDialog {
         Product p = new Product();
         p.setId(idproduto);
         p.search();
-        if(v.orderInsert(val, quant, idproduto, idpedido,idusuario,p.getPreparo()).equals(true)){
+        if(v.orderInsert(val, quant, idproduto, idpedido,idusuario,p.getPreparo(),u.getComissao()).equals(true)){
             this.dispose(); 
         }
         }else{

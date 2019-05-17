@@ -17,13 +17,17 @@ import net.proteanit.sql.DbUtils;
 public class Cashier extends javax.swing.JFrame {
 
     private int idSelect;
+  
     /**
      * Creates new form Cashier
      */
     public Cashier() {
         initComponents();
+        
     }
 
+    
+    
     public void orderList(Integer comanda){
     tblListaItens.setModel(DbUtils.resultSetToTableModel(new Sale()
                         .consultaSale(comanda)));
@@ -31,7 +35,7 @@ public class Cashier extends javax.swing.JFrame {
                 for (int i = 0; i <= tblListaItens.getRowCount() - 1; i++) {
                     count += Double.parseDouble(tblListaItens.getValueAt(i, 4).toString());
                 }
-                lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
+                lbValorTotal.setText(String.format("%2.5s", String.valueOf(count)));
     }
     
     /**
@@ -87,6 +91,11 @@ public class Cashier extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(204, 204, 204));
         jButton2.setText("F3 - Cartao");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setText("F4 - Cancelar");
@@ -219,7 +228,13 @@ public class Cashier extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(204, 204, 204));
         jButton4.setText("Baixa de delivery");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -256,9 +271,9 @@ public class Cashier extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtComanda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,7 +291,8 @@ public class Cashier extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Pay().setVisible(true);
+        new Pay(Double.parseDouble(lbValorTotal.getText()),Integer.parseInt(txtComanda.getText()),this)
+                .setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtComandaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtComandaKeyReleased
@@ -311,6 +327,15 @@ public class Cashier extends javax.swing.JFrame {
                 .getValueAt(setar, 0).toString());
         btnRemoverItem.setEnabled(true);
     }//GEN-LAST:event_tblListaItensMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new PayCard(Double.parseDouble(lbValorTotal.getText()),Integer.parseInt(txtComanda.getText()),this)
+                .setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        new PayDelivery(this).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

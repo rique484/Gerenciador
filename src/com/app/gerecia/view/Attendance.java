@@ -21,7 +21,8 @@ import com.app.gerecia.config.Messager;
 public class Attendance extends javax.swing.JFrame {
 
     private int idSelect;
-
+    private String valor;
+    
     public Attendance() {
         initComponents();
     }
@@ -421,6 +422,8 @@ public class Attendance extends javax.swing.JFrame {
         int setar = tblItens.getSelectedRow();
         idSelect = Integer.parseInt(tblItens.getModel()
                 .getValueAt(setar, 0).toString());
+        valor = tblItens.getModel()
+                .getValueAt(setar, 2).toString();
         btnRemove.setEnabled(true);
     }//GEN-LAST:event_tblItensMouseClicked
 
@@ -429,9 +432,10 @@ public class Attendance extends javax.swing.JFrame {
         if (s.SaleCancel(idSelect).equals(true)) {
             System.out.println("ok");
             orderList(Integer.parseInt(txtBuscarCom.getText()));
+            new Manager().logData(Integer.parseInt(new TempFileUser()
+                 .tempReadUser()), "Venda no valor de "+ valor+" cancelada");
             btnRemove.setEnabled(false);
-        } else {
-        }
+        } 
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnListProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListProductActionPerformed

@@ -5,7 +5,9 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Manager;
 import com.app.gerecia.config.Messager;
+import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.User;
 import javax.swing.JOptionPane;
 
@@ -313,13 +315,13 @@ public class CadUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
-        if (txtNome.getText()==null || txtNome.getText().trim().equals("")) {
+        if (txtNome.getText() == null || txtNome.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, Messager.NAME_REQUIRED);
         } else {
-            if (txtUser.getText()==null || txtUser.getText().trim().equals("")) {
+            if (txtUser.getText() == null || txtUser.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(null, Messager.USER_REQUIRED);
             } else {
-                if (txtPass.getText()==null || txtPass.getText().trim().equals("")) {
+                if (txtPass.getText() == null || txtPass.getText().trim().equals("")) {
                     JOptionPane.showMessageDialog(null, Messager.PASS_REQUIRED);
                 } else {
                     if (txtCPF.getText().equals("   .   .   -  ")) {
@@ -331,13 +333,25 @@ public class CadUser extends javax.swing.JFrame {
                         u.setPass(txtPass.getText());
                         u.setComissao(sldComissao.getValue());
                         u.setCpf(txtCPF.getText());
-                        if(chkADMIN.isSelected()){u.setTipo(1);}else{
-                            if(chkCaixa.isSelected()){u.setTipo(2);
-                            }else{u.setTipo(0);}}
-                        if(chkInativo.isSelected()){u.setStatus(1);}else{u.setStatus(0);}
+                        if (chkADMIN.isSelected()) {
+                            u.setTipo(1);
+                        } else {
+                            if (chkCaixa.isSelected()) {
+                                u.setTipo(2);
+                            } else {
+                                u.setTipo(0);
+                            }
+                        }
+                        if (chkInativo.isSelected()) {
+                            u.setStatus(1);
+                        } else {
+                            u.setStatus(0);
+                        }
                         Boolean lg = u.cadastro();
                         if (lg == true) {
                             this.dispose();
+                            new Manager().logData(Integer.parseInt(new TempFileUser()
+                                    .tempReadUser()), "Operador cadastrado " + u.getNome());
                             JOptionPane.showMessageDialog(null, "Cadastrado com sucesso");
                         }
                     }
@@ -353,19 +367,25 @@ public class CadUser extends javax.swing.JFrame {
     }//GEN-LAST:event_sldComissaoMouseDragged
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-       User u = new User();
+        User u = new User();
         u.setCpf(txtCPF.getText());
         u.consultar();
-        if (u.consultar()==true) {
+        if (u.consultar() == true) {
             btnGravar.setEnabled(false);
             btnAlterar.setEnabled(true);
             chkInativo.setEnabled(true);
             txtNome.setText(u.getNome());
             txtUser.setText(u.getUser());
             txtPass.setText(u.getPass());
-            if(u.getTipo()==1){chkADMIN.setSelected(true);}
-            if(u.getTipo()==2){chkCaixa.setSelected(true);}
-            if(u.getStatus()==1){chkInativo.setSelected(true);}
+            if (u.getTipo() == 1) {
+                chkADMIN.setSelected(true);
+            }
+            if (u.getTipo() == 2) {
+                chkCaixa.setSelected(true);
+            }
+            if (u.getStatus() == 1) {
+                chkInativo.setSelected(true);
+            }
             int id;
             id = u.getIdUser();
             String idU = String.valueOf(id);
@@ -376,18 +396,18 @@ public class CadUser extends javax.swing.JFrame {
             lbComissao.setText(vl + "%");
         } else {
             JOptionPane.showMessageDialog(null, "Cadastrado nao localizado");
-        }       
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-        if (txtNome.getText()==null || txtNome.getText().trim().equals("")) {
+        if (txtNome.getText() == null || txtNome.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Preecha o nome");
         } else {
-            if (txtUser.getText()==null || txtUser.getText().trim().equals("")) {
+            if (txtUser.getText() == null || txtUser.getText().trim().equals("")) {
                 JOptionPane.showMessageDialog(null, "Preecha o usuario");
             } else {
-                if (txtPass.getText()==null || txtPass.getText().trim().equals("")) {
+                if (txtPass.getText() == null || txtPass.getText().trim().equals("")) {
                     JOptionPane.showMessageDialog(null, "Preecha o senha");
                 } else {
                     if (txtCPF.getText().equals("   .   .   -  ")) {
@@ -402,13 +422,25 @@ public class CadUser extends javax.swing.JFrame {
                         u.setPass(txtPass.getText());
                         u.setComissao(sldComissao.getValue());
                         u.setCpf(txtCPF.getText());
-                        if(chkADMIN.isSelected()){u.setTipo(1);}else{
-                            if(chkCaixa.isSelected()){u.setTipo(2);
-                            }else{u.setTipo(0);}}
-                        if(chkInativo.isSelected()){u.setStatus(1);}else{u.setStatus(0);}
+                        if (chkADMIN.isSelected()) {
+                            u.setTipo(1);
+                        } else {
+                            if (chkCaixa.isSelected()) {
+                                u.setTipo(2);
+                            } else {
+                                u.setTipo(0);
+                            }
+                        }
+                        if (chkInativo.isSelected()) {
+                            u.setStatus(1);
+                        } else {
+                            u.setStatus(0);
+                        }
                         Boolean lg = u.alterar();
                         if (lg == true) {
                             this.dispose();
+                            new Manager().logData(Integer.parseInt(new TempFileUser()
+                                    .tempReadUser()), "Operador alterado " + u.getNome());
                             JOptionPane.showMessageDialog(null, "Alterado com sucesso");
                         }
                     }

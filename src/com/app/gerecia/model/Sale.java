@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 public class Sale {
     
     private static final String ZERO_SALE = "update "
-            + "pedido set status=1 where num_comanda=?";
+            + "pedido set status=-1 where num_comanda=?";
     private static final String UPDATE1_ORDER_PREPARED = "update "
             + "venda set status_preparo=2 where idvenda=?";
     

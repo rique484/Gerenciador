@@ -181,4 +181,32 @@ public class User {
         return false;
     }
     
+    public Boolean consultarViaId(Integer id) {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "select * from user where iduser=?";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                setNome(rs.getString(3));
+                setUser(rs.getString(4));
+                setComissao(rs.getInt(6));
+                setIdUser(rs.getInt(1));
+                setTipo(rs.getInt(7));
+                setPass(rs.getString(5));
+                setStatus(rs.getInt(8));
+                return true;
+            } else {
+                System.out.println("erro");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
 }

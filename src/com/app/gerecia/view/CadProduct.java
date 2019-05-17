@@ -5,7 +5,9 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Manager;
 import com.app.gerecia.config.Messager;
+import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Product;
 import javax.swing.JOptionPane;
 
@@ -255,6 +257,8 @@ public class CadProduct extends javax.swing.JFrame {
         if(chkPreparo.isSelected()){p.setPreparo(1);} else {p.setPreparo(0);}
         if(p.alterar().equals(true)){
             dispose();
+            new Manager().logData(Integer.parseInt(new TempFileUser()
+                         .tempReadUser()), "Produto alterado "+ p.getNome());
             new CadProduct().setVisible(true);
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -281,6 +285,8 @@ public class CadProduct extends javax.swing.JFrame {
                     p.setPreparo(0);
                 }
                 if (p.cadastroProduto() == true) {
+                    new Manager().logData(Integer.parseInt(new TempFileUser()
+                         .tempReadUser()), "Cadastro de Produto "+ p.getNome());
                     dispose();
                     new CadProduct().setVisible(true);
                 }
