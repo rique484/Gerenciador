@@ -5,6 +5,7 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Manager;
 import com.app.gerecia.config.Messager;
 import com.app.gerecia.config.Print;
 import com.app.gerecia.config.TempFileUser;
@@ -22,6 +23,8 @@ import net.proteanit.sql.DbUtils;
  */
 public class Delivery extends javax.swing.JFrame {
 
+    private int idSelect;
+    private String valor;
     /**
      * Creates new form Delivery
      */
@@ -35,7 +38,7 @@ public class Delivery extends javax.swing.JFrame {
         for (int i = 0; i <= tblItens.getRowCount() - 1; i++) {
             count += Double.parseDouble(tblItens.getValueAt(i, 4).toString());
         }
-        //lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
+        lbValorTotal.setText(String.format("R$ %2.5s", String.valueOf(count)));
     }
 
     /**
@@ -74,8 +77,10 @@ public class Delivery extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtObs = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
         btnReload = new javax.swing.JButton();
+        lbValorTotal = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         chkDinheiro = new javax.swing.JRadioButton();
         chkCatao = new javax.swing.JRadioButton();
@@ -85,13 +90,18 @@ public class Delivery extends javax.swing.JFrame {
         txtTroco = new javax.swing.JFormattedTextField();
         btnFinal = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnZero = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Delivery");
         setUndecorated(true);
         setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busca", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 3, 10))); // NOI18N
 
+        btnConsultar.setBackground(new java.awt.Color(204, 204, 204));
+        btnConsultar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -255,18 +265,25 @@ public class Delivery extends javax.swing.JFrame {
 
             }
         ));
+        tblItens.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblItensMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblItens);
 
         txtObs.setEnabled(false);
         jScrollPane2.setViewportView(txtObs);
 
-        jLabel1.setText("Observacao");
+        jLabel1.setText("Observação");
 
-        jButton3.setText("Remover");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnRemover.setBackground(new java.awt.Color(204, 204, 204));
+        btnRemover.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRemover.setText("Remover");
+        btnRemover.setEnabled(false);
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnRemoverActionPerformed(evt);
             }
         });
 
@@ -278,21 +295,32 @@ public class Delivery extends javax.swing.JFrame {
             }
         });
 
+        lbValorTotal.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        lbValorTotal.setText("R$");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jLabel9.setText("Valor da comanda:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -301,13 +329,16 @@ public class Delivery extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnRemover, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnReload, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -393,6 +424,8 @@ public class Delivery extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnFinal.setBackground(new java.awt.Color(204, 204, 204));
+        btnFinal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnFinal.setText("Finalizar e imprimir");
         btnFinal.setEnabled(false);
         btnFinal.addActionListener(new java.awt.event.ActionListener() {
@@ -401,10 +434,22 @@ public class Delivery extends javax.swing.JFrame {
             }
         });
 
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setBackground(new java.awt.Color(204, 204, 204));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCancelar.setText("Sair");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnZero.setBackground(new java.awt.Color(204, 204, 204));
+        btnZero.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnZero.setForeground(new java.awt.Color(102, 0, 0));
+        btnZero.setText("Fechar comanda zerada");
+        btnZero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZeroActionPerformed(evt);
             }
         });
 
@@ -418,12 +463,14 @@ public class Delivery extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnZero, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -436,14 +483,15 @@ public class Delivery extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFinal)
-                    .addComponent(btnCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnZero))
+                .addContainerGap())
         );
 
         pack();
@@ -477,7 +525,7 @@ public class Delivery extends javax.swing.JFrame {
         p.setNome(tblBusca.getModel().getValueAt(setar, 1).toString());
         p.setValor(Double.parseDouble(tblBusca.getModel().getValueAt(setar, 2).toString()));
         OrderConfirmation atc = new OrderConfirmation(this, true);
-        atc.exportDataDelivery(p, 1);
+        atc.exportDataDelivery(p,this, 1,Integer.parseInt(txtBuscarC.getText()));;
         atc.setVisible(true);
     }//GEN-LAST:event_tblBuscaMouseClicked
 
@@ -556,7 +604,7 @@ public class Delivery extends javax.swing.JFrame {
             p.setNome(tblBusca.getModel().getValueAt(setar, 1).toString());
             p.setValor(Double.parseDouble(tblBusca.getModel().getValueAt(setar, 2).toString()));
             OrderConfirmation atc = new OrderConfirmation(this, true);
-            atc.exportDataDelivery(p, 1);
+            atc.exportDataDelivery(p,this, 1,Integer.parseInt(txtBuscarC.getText()));
             atc.setVisible(true);
         }
     }//GEN-LAST:event_tblBuscaKeyReleased
@@ -566,7 +614,7 @@ public class Delivery extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReloadActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        orderList(Integer.parseInt(txtBuscarC.getText()));
+
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -616,9 +664,36 @@ public class Delivery extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnFinalActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        Sale s = new Sale();
+        if (s.SaleCancel(idSelect).equals(true)) {
+            System.out.println("ok");
+            orderList(Integer.parseInt(txtBuscarC.getText()));
+            new Manager().logData(Integer.parseInt(new TempFileUser()
+                 .tempReadUser()), "Venda no valor de "+ valor+" cancelada");
+            btnRemover.setEnabled(false);
+        } 
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void tblItensMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItensMouseClicked
+       int setar = tblItens.getSelectedRow();
+        idSelect = Integer.parseInt(tblItens.getModel()
+                .getValueAt(setar, 0).toString());
+        valor = tblItens.getModel()
+                .getValueAt(setar, 2).toString();
+        btnRemover.setEnabled(true);
+    }//GEN-LAST:event_tblItensMouseClicked
+
+    private void btnZeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZeroActionPerformed
+        orderList(Integer.parseInt(txtBuscarC.getText()));
+        if (lbValorTotal.getText().equals("R$ 0.0")) {
+            new Sale().ZeroSaleDelivery(txtProtocolo.getText());
+            dispose();
+            new Delivery().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Comanda com venda");
+        }
+    }//GEN-LAST:event_btnZeroActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -626,6 +701,8 @@ public class Delivery extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnFinal;
     private javax.swing.JButton btnReload;
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JButton btnZero;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton chkCatao;
     private javax.swing.JRadioButton chkCredito;
@@ -633,7 +710,6 @@ public class Delivery extends javax.swing.JFrame {
     private javax.swing.JRadioButton chkDinheiro;
     private javax.swing.JCheckBox chkTroco;
     private javax.swing.ButtonGroup dinheiroOuCartao;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -642,6 +718,7 @@ public class Delivery extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -653,6 +730,7 @@ public class Delivery extends javax.swing.JFrame {
     private javax.swing.JLabel lbEnd;
     private javax.swing.JLabel lbNome;
     private javax.swing.JLabel lbNumero;
+    private javax.swing.JLabel lbValorTotal;
     private javax.swing.JTable tblBusca;
     private javax.swing.JTable tblItens;
     private javax.swing.JTextField txtBuscaP;

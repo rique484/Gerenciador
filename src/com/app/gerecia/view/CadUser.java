@@ -61,6 +61,7 @@ public class CadUser extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro De Operadores");
         setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("ID");

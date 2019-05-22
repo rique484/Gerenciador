@@ -43,7 +43,7 @@ public class Order {
             + "status=1 where iddelivery=?";
     private static final String SELECT_ORDER_DELIVERY_PAY = "select * from delivery where "
             + "telefone=? AND status=0 ";
-    
+
     private Integer numero_comanda;
     private Integer numero_contato;
     private Double valor_total;
@@ -51,8 +51,7 @@ public class Order {
     private Integer id;
     private Integer status_preparo;
     private Date data;
-    
- 
+
     public Integer getNumero_comanda() {
         return numero_comanda;
     }
@@ -128,11 +127,11 @@ public class Order {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e); 
+            System.out.println(e);
             return false;
         }
     }
-    
+
     public Boolean consultaGeral() {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -149,11 +148,11 @@ public class Order {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e); 
+            System.out.println(e);
             return false;
         }
     }
-    
+
     public Boolean consultaDelivery() {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -173,13 +172,13 @@ public class Order {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e); 
+            System.out.println(e);
             return false;
         }
     }
-    
-    public Boolean orderInsert(Double valor,Integer quantidade,Integer idproduto
-            ,Integer idpedido,Integer iduser,Integer status_preparo,Integer comiss){
+
+    public Boolean orderInsert(Double valor, Integer quantidade, Integer idproduto,
+             Integer idpedido, Integer iduser, Integer status_preparo, Integer comiss) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER;
@@ -206,10 +205,10 @@ public class Order {
             System.out.println(e);
             return false;
         }
-    } 
-    
-    public Boolean orderInsertDelivery(Double valor,Integer quantidade,Integer idproduto
-            ,Integer iduser,Integer status_preparo,Integer iddelivery){
+    }
+
+    public Boolean orderInsertDelivery(Double valor, Integer quantidade, Integer idproduto,
+             Integer iduser, Integer status_preparo, Integer iddelivery) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER_DELIVERY;
@@ -235,10 +234,10 @@ public class Order {
             System.out.println(e);
             return false;
         }
-    } 
-    
-    public Boolean DeliveryPay(Integer id,Integer debt,Integer crt,
-            Integer dinheiro,Double troco){
+    }
+
+    public Boolean DeliveryPay(Integer id, Integer debt, Integer crt,
+            Integer dinheiro, Double troco) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = CREATE_PAY_DELIVERY;
@@ -261,10 +260,10 @@ public class Order {
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
             return false;
-        } 
+        }
     }
-    
-    public Boolean DeliveryObs(String obs,Integer id){
+
+    public Boolean DeliveryObs(String obs, Integer id) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = CREATE_DESC_DELIVERY;
@@ -273,7 +272,7 @@ public class Order {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, obs);
             pst.setInt(2, id);
-            
+
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
@@ -285,10 +284,10 @@ public class Order {
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
             return false;
-        } 
+        }
     }
-    
-    public Boolean orderCreate(){
+
+    public Boolean orderCreate() {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = CREATE_ORDER;
@@ -309,21 +308,21 @@ public class Order {
             return false;
         }
     }
-    
-    public Boolean orderCreateDelivery(){
+
+    public Boolean orderCreateDelivery() {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = CREATE_ORDER_DELIVERY;
         try {
             conexao = new ConfigDB().conector();
-            pst = conexao.prepareStatement(sql);  
+            pst = conexao.prepareStatement(sql);
             pst.setInt(1, numero_contato);
-            pst.setDate(2,Date.valueOf(LocalDate.now()));
+            pst.setDate(2, Date.valueOf(LocalDate.now()));
             int add = pst.executeUpdate();
-            if (add > 0) {    
+            if (add > 0) {
                 conexao.close();
                 return true;
-            } else {  
+            } else {
                 JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
@@ -332,8 +331,8 @@ public class Order {
             return false;
         }
     }
-    
-    public Boolean orderUpdate1(Integer protocolo){
+
+    public Boolean orderUpdate1(Integer protocolo) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = UPDATE1_ORDER_DELIVERY;
@@ -354,8 +353,8 @@ public class Order {
         }
         return false;
     }
-    
-    public ResultSet deliverySearch(){
+
+    public ResultSet deliverySearch() {
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -365,16 +364,16 @@ public class Order {
                 + "from delivery inner join clientes on delivery.telefone = clientes.telefone "
                 + "where delivery.status = 1";
         try {
-         pst = conexao.prepareStatement(sql);
-         rs  = pst.executeQuery();     
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
             return rs;
         } catch (SQLException e) {
             System.out.println(e);
             return null;
-        } 
+        }
     }
 
-    public Boolean orderClose(Double valor,Integer modopagt,Integer operador,Integer comanda){
+    public Boolean orderClose(Double valor, Integer modopagt, Integer operador, Integer comanda) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = "update pedido set valor_total=?, status=1, modo_pagt=?, "
@@ -388,7 +387,7 @@ public class Order {
             pst.setInt(4, comanda);
             int add = pst.executeUpdate();
             if (add > 0) {
-                
+
                 conexao.close();
                 return true;
             } else {
@@ -400,8 +399,8 @@ public class Order {
         }
         return false;
     }
-    
-    public Boolean orderDeliveryClose(Double valor,Integer modopagt,Integer operador,Integer comanda){
+
+    public Boolean orderDeliveryClose(Double valor, Integer modopagt, Integer operador, Integer comanda) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = "update delivery set valor_total=?, status=2, modo_pagt=?, "
@@ -415,7 +414,7 @@ public class Order {
             pst.setInt(4, comanda);
             int add = pst.executeUpdate();
             if (add > 0) {
-                
+
                 conexao.close();
                 return true;
             } else {
@@ -427,8 +426,8 @@ public class Order {
         }
         return false;
     }
-    
-    public ResultSet consultaPayDelivery(Integer protocolo){
+
+    public ResultSet consultaPayDelivery(Integer protocolo) {
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -439,14 +438,13 @@ public class Order {
                 + "delivery.iddelivery = venda.iddelivery where delivery.iddelivery = ? and "
                 + "delivery.status=1";
         try {
-         pst = conexao.prepareStatement(sql);
-         pst.setInt(1, protocolo);
-         rs  = pst.executeQuery();     
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, protocolo);
+            rs = pst.executeQuery();
             return rs;
         } catch (SQLException e) {
             return null;
-        }       
+        }
     }
-    
-}
 
+}

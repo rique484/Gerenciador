@@ -51,6 +51,7 @@ public class Pay extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -82,6 +83,11 @@ public class Pay extends javax.swing.JFrame {
 
         txtValorPago.setForeground(new java.awt.Color(0, 51, 51));
         txtValorPago.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        txtValorPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtValorPagoActionPerformed(evt);
+            }
+        });
         txtValorPago.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtValorPagoKeyPressed(evt);
@@ -160,6 +166,10 @@ public class Pay extends javax.swing.JFrame {
         dispose();
         new Cashier().setVisible(true);
     }//GEN-LAST:event_btnFinalizarActionPerformed
+
+    private void txtValorPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtValorPagoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

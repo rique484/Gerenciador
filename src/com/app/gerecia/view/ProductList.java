@@ -7,10 +7,13 @@ package com.app.gerecia.view;
 
 import com.app.gerecia.config.ConfigDB;
 import com.app.gerecia.config.Print;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -52,6 +55,7 @@ public class ProductList extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         tblList.setModel(new javax.swing.table.DefaultTableModel(

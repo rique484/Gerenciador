@@ -33,6 +33,7 @@ public class SelectDelivery extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setResizable(false);
 
         btnNovo.setBackground(new java.awt.Color(204, 204, 204));
         btnNovo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N

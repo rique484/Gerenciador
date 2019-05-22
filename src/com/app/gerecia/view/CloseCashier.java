@@ -5,6 +5,7 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.Manager;
 import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.CashierControl;
 import java.awt.Color;
@@ -37,7 +38,7 @@ public class CloseCashier extends javax.swing.JFrame {
                 jButton1.setEnabled(true);
                 data = c.getData();
                 c.setOperador(operador);
-                c.getSun();
+                c.setValorFinal(c.getSunD()+c.getSun());
                 total = c.getValorFinal();
                 System.out.println(total.toString()+data);
             } else {
@@ -134,6 +135,8 @@ public class CloseCashier extends javax.swing.JFrame {
         c.close(total, Double.parseDouble(txtRecolhido.getText()), operador, data);
         resultado = Double.parseDouble(txtRecolhido.getText())-total;
         System.out.println(resultado);
+        new Manager().logData(operador, "efetuou fechamento de "
+                + "caixa no valor recolhido de "+txtRecolhido.getText());
         if(resultado>0){
             lbValorTotal.setText(String.valueOf(resultado));
             lbValorTotal.setForeground(Color.green);
@@ -146,6 +149,7 @@ public class CloseCashier extends javax.swing.JFrame {
                 lbValorTotal.setForeground(Color.red);
             }
         }
+        jButton1.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     

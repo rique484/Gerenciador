@@ -1,5 +1,5 @@
 ID do produto	Nome	Valor	Codigo de barras	Ativo	
-1	Fatia Pizza	6.5		SIM	
+1	Fatia Pizza	6.0		SIM	
 2	Fatia de bolo	4.5		SIM	
 3	Coca-cola 500ml	4.5	975494567	SIM	
 4	Coxinha	3.5		SIM	
@@ -7,3 +7,4 @@ ID do produto	Nome	Valor	Codigo de barras	Ativo
 6	Pizza tipo 2	35.5		SIM	
 7	X-Burger grande	5.5		SIM	
 8	novo	4.54	7895646	SIM	
+9	Pizza tipo 3	33.5		SIM	

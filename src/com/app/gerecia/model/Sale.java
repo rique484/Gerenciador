@@ -21,6 +21,8 @@ public class Sale {
     
     private static final String ZERO_SALE = "update "
             + "pedido set status=-1 where num_comanda=?";
+    private static final String ZERO_SALE_DELIVERY = "update "
+            + "delivery set status=-1 where iddelivery=?";
     private static final String UPDATE1_ORDER_PREPARED = "update "
             + "venda set status_preparo=2 where idvenda=?";
     
@@ -92,6 +94,28 @@ public class Sale {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, numeroComanda);
+            int add = pst.executeUpdate();
+            if (add > 0) {
+                conexao.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
+    public Boolean ZeroSaleDelivery(String protocolo){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        String sql = ZERO_SALE_DELIVERY;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, protocolo);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();

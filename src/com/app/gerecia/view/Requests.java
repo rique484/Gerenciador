@@ -130,7 +130,6 @@ public final class Requests extends javax.swing.JFrame {
             }
         ));
         tblRes.setDragEnabled(true);
-        tblRes.setRowSorter(null);
         tblRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblResMouseClicked(evt);

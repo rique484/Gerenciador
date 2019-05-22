@@ -17,14 +17,20 @@ import java.sql.Date;
  */
 public class OrderConfirmation extends javax.swing.JDialog {
 
-    private Integer quant,tipo;
+    private Integer quant, tipo;
     private Integer idpedido, iddelivery;
     private Integer idusuario;
-    private Integer idproduto; 
+    private Integer idproduto;
     private Double valor;
-    private Integer comanda,q;
+    private Integer comandanumero, q;
+    private Attendance attendance;
+    private Delivery delivery;
+
     /**
      * Creates new form OrderConfirmation
+     *
+     * @param parent
+     * @param modal
      */
     public OrderConfirmation(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -121,38 +127,37 @@ public class OrderConfirmation extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-        
-        
+
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         User u = new User();
-        u.consultarViaId(Integer.parseUnsignedInt(new TempFileUser().tempReadUser()));
-        System.out.println(tipo);
-        if(tipo.equals(0)){
-            System.out.println("teste1");
-        quant=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-        Double val = quant*valor; 
-        Order v = new Order();
-        Date data = new Date(new java.util.Date().getTime());
-        v.setData(data);
-        Product p = new Product();
-        p.setId(idproduto);
-        p.search();
-        if(v.orderInsert(val, quant, idproduto, idpedido,idusuario,p.getPreparo(),u.getComissao()).equals(true)){
-            this.dispose(); 
-        }
-        }else{
-            System.out.println("teste2");
-        quant=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-        Double val = quant*valor; 
-        Order v = new Order();
-        Date data = new Date(new java.util.Date().getTime());
-        v.setData(data);
-        Product p = new Product();
-        p.setId(idproduto);
-        p.search();
-        if(v.orderInsertDelivery(val, quant, idproduto,idusuario,p.getPreparo(),iddelivery).equals(true)){
-            this.dispose(); 
-        }
+        u.consultarViaId(Integer.parseInt(new TempFileUser().tempReadUser()));
+        if (tipo.equals(0)) {
+            quant = Integer.parseInt(jComboBox1.getSelectedItem().toString());
+            Double val = quant * valor;
+            Order v = new Order();
+            Date data = new Date(new java.util.Date().getTime());
+            v.setData(data);
+            Product p = new Product();
+            p.setId(idproduto);
+            p.search();
+            if (v.orderInsert(val, quant, idproduto, idpedido, idusuario, p.getPreparo(),
+                     u.getComissao()).equals(true)) {
+                attendance.orderList(comandanumero);
+                this.dispose();
+            }
+        } else {
+            quant = Integer.parseInt(jComboBox1.getSelectedItem().toString());
+            Double val = quant * valor;
+            Order v = new Order();
+            Date data = new Date(new java.util.Date().getTime());
+            v.setData(data);
+            Product p = new Product();
+            p.setId(idproduto);
+            p.search();
+            if (v.orderInsertDelivery(val, quant, idproduto, idusuario, p.getPreparo(), iddelivery).equals(true)) {
+                this.dispose();
+                delivery.orderList(comandanumero);
+            }
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
@@ -160,25 +165,29 @@ public class OrderConfirmation extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    public void exportData(Product p,Integer tipoTela) {
+    public void exportData(Product p, Attendance a, Integer tipoTela, Integer comanda) {
+        attendance = a;
         tipo = tipoTela;
         valor = p.getValor();
         idproduto = p.getId();
         lbNomeProd.setText(p.getNome());
         idpedido = Integer.parseInt(new TempFileUser().tempReadOrder());
         idusuario = Integer.parseInt(new TempFileUser().tempReadUser());
+        comandanumero = comanda;
     }
-    
-    public void exportDataDelivery(Product p,Integer tipoTela) {
+
+    public void exportDataDelivery(Product p, Delivery d, Integer tipoTela, Integer numero) {
+        delivery = d;
         tipo = tipoTela;
         valor = p.getValor();
         idproduto = p.getId();
         lbNomeProd.setText(p.getNome());
         iddelivery = Integer.parseInt(new TempFileUser().tempReadOrder());
         idusuario = Integer.parseInt(new TempFileUser().tempReadUser());
+        comandanumero = numero;
     }
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;

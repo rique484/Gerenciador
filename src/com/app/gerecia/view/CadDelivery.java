@@ -44,6 +44,7 @@ public class CadDelivery extends javax.swing.JFrame {
         txtTelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Nome");
 

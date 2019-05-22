@@ -5,8 +5,10 @@
  */
 package com.app.gerecia.view;
 
+import com.app.gerecia.config.TempFileUser;
 import com.app.gerecia.model.Order;
 import com.app.gerecia.model.Sale;
+import com.app.gerecia.model.Product;
 import java.awt.event.KeyEvent;
 import net.proteanit.sql.DbUtils;
 
@@ -16,28 +18,27 @@ import net.proteanit.sql.DbUtils;
  */
 public class Cashier extends javax.swing.JFrame {
 
-    private int idSelect;
-  
+    private Integer idSelect;
+    private Integer idPedido;
+
     /**
      * Creates new form Cashier
      */
     public Cashier() {
         initComponents();
-        
+
     }
 
-    
-    
-    public void orderList(Integer comanda){
-    tblListaItens.setModel(DbUtils.resultSetToTableModel(new Sale()
-                        .consultaSale(comanda)));
-                double count = 0;
-                for (int i = 0; i <= tblListaItens.getRowCount() - 1; i++) {
-                    count += Double.parseDouble(tblListaItens.getValueAt(i, 4).toString());
-                }
-                lbValorTotal.setText(String.format("%2.5s", String.valueOf(count)));
+    public void orderList(Integer comanda) {
+        tblListaItens.setModel(DbUtils.resultSetToTableModel(new Sale()
+                .consultaSale(comanda)));
+        double count = 0;
+        for (int i = 0; i <= tblListaItens.getRowCount() - 1; i++) {
+            count += Double.parseDouble(tblListaItens.getValueAt(i, 4).toString());
+        }
+        lbValorTotal.setText(String.format("%2.5s", String.valueOf(count)));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,7 +62,7 @@ public class Cashier extends javax.swing.JFrame {
         lbValorTotal = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtAdd = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -194,6 +195,13 @@ public class Cashier extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Adicionar item");
 
+        txtAdd.setEnabled(false);
+        txtAdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtAddKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -201,7 +209,7 @@ public class Cashier extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2)
+                    .addComponent(txtAdd)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 118, Short.MAX_VALUE)))
@@ -213,7 +221,7 @@ public class Cashier extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -291,7 +299,7 @@ public class Cashier extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Pay(Double.parseDouble(lbValorTotal.getText()),Integer.parseInt(txtComanda.getText()),this)
+        new Pay(Double.parseDouble(lbValorTotal.getText()), Integer.parseInt(txtComanda.getText()), this)
                 .setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -300,9 +308,11 @@ public class Cashier extends javax.swing.JFrame {
             if (!txtComanda.getText().equals("")) {
                 Order o = new Order();
                 o.setNumero_comanda(Integer.parseInt(txtComanda.getText()));
-                if(o.consulta()==true){
+                if (o.consulta() == true) {
                     orderList(o.getNumero_comanda());
-                }  
+                    idPedido = o.getId();
+                    txtAdd.setEnabled(true);
+                }
             }
         }
     }//GEN-LAST:event_txtComandaKeyReleased
@@ -329,13 +339,31 @@ public class Cashier extends javax.swing.JFrame {
     }//GEN-LAST:event_tblListaItensMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new PayCard(Double.parseDouble(lbValorTotal.getText()),Integer.parseInt(txtComanda.getText()),this)
+        new PayCard(Double.parseDouble(lbValorTotal.getText()), Integer.parseInt(txtComanda.getText()), this)
                 .setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         new PayDelivery(this).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtAddKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!txtAdd.getText().equals("")) {
+                Product p = new Product();
+                p.setId(Integer.parseInt(txtAdd.getText()));
+                p.search();
+                Order v = new Order();
+                v.orderInsert(p.getValor(), 1, p.getId(), idPedido,
+                        Integer.parseInt(new TempFileUser().tempReadUser()), p.getPreparo(),
+                         0).equals(true);
+                orderList(Integer.parseInt(txtComanda.getText()));
+                txtAdd.setText("");
+            }
+        }
+
+
+    }//GEN-LAST:event_txtAddKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -353,9 +381,9 @@ public class Cashier extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lbValorTotal;
     private javax.swing.JTable tblListaItens;
+    private javax.swing.JTextField txtAdd;
     private javax.swing.JTextField txtComanda;
     // End of variables declaration//GEN-END:variables
 }

@@ -136,25 +136,21 @@ public class CashierControl {
         }
     }
     
-    public Boolean getSun(){
+    public Double getSun(){
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "select sum(pedido.valor_total)+sum(delivery.valor_total) from pedido inner join delivery on pedido.idcaixa = delivery.idcaixa where pedido.status=1 and delivery.status=2 and pedido.idcaixa = ? and pedido.data = ? and delivery.data = ?";
-
-//"select sum(valor_total) from pedido where status=1 and idcaixa = ? and data = ?";
+        String sql = "select sum(valor_total) from pedido where status=1 and idcaixa = ? and data = ?";
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, operador);
             pst.setDate(2, data);
-            pst.setDate(3, data);
             rs = pst.executeQuery();
             if (rs.next()) { 
-                setValorFinal(rs.getDouble(1));
-                return true;
+                return rs.getDouble(1);
             } else {
-                return false;
+                return 0.0;
             }
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
@@ -162,6 +158,29 @@ public class CashierControl {
         }
     }
     
+    public Double getSunD(){
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "select sum(valor_total) from delivery where status=2 and idcaixa = ? and data = ?";
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1, operador);
+            pst.setDate(2, data);
+            rs = pst.executeQuery();
+            if (rs.next()) { 
+                return rs.getDouble(1);
+            } else {
+                return 0.0;
+            }
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+    
+
     public Boolean close(Double valot,Double valorc,Integer operador,Date data){
         Connection conexao = null;
         PreparedStatement pst = null;
