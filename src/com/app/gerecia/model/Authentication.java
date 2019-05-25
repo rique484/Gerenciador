@@ -14,15 +14,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import jdk.nashorn.internal.ir.BreakNode;
-
 /**
  *
  * @author rique
  */
 public class Authentication { 
     private static final String AUTH = "select * from user where user=? and pass=?";
-    
+    //****************************************************************************
     public Boolean auth(String user,String pass){
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -52,6 +50,5 @@ public class Authentication {
         } catch (HeadlessException | SQLException e) {
             return null;
         }
-    }
-    
+    }  
 }

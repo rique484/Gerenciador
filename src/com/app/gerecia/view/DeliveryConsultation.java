@@ -7,7 +7,6 @@ package com.app.gerecia.view;
 
 import com.app.gerecia.config.Print;
 import com.app.gerecia.model.Order;
-import com.app.gerecia.model.Sale;
 import net.proteanit.sql.DbUtils;
 
 /**

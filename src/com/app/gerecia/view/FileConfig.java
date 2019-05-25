@@ -14,9 +14,9 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class FileConfig extends javax.swing.JFrame {
-    static String MSG_CONFG = "Abra o sistema novamente para atribuir as modificacoes";
-    static String SUCSS = "Conectado";
-    static String ERR = "Sem conexao";
+    static String MSG_CONFG = "Abra o sistema novamente para atribuir as modificações";
+    static String SUCSS = "Conectado.";
+    static String ERR = "Sem conexão.";
     
     /**
      * 

@@ -353,7 +353,7 @@ public class CadUser extends javax.swing.JFrame {
                             this.dispose();
                             new Manager().logData(Integer.parseInt(new TempFileUser()
                                     .tempReadUser()), "Operador cadastrado " + u.getNome());
-                            JOptionPane.showMessageDialog(null, "Cadastrado com sucesso");
+                            JOptionPane.showMessageDialog(null, Messager.SUSS_CAD);
                         }
                     }
                 }
@@ -396,7 +396,7 @@ public class CadUser extends javax.swing.JFrame {
             String vl = String.valueOf(valor);
             lbComissao.setText(vl + "%");
         } else {
-            JOptionPane.showMessageDialog(null, "Cadastrado nao localizado");
+            JOptionPane.showMessageDialog(null, Messager.ITEM_NOT);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -442,7 +442,7 @@ public class CadUser extends javax.swing.JFrame {
                             this.dispose();
                             new Manager().logData(Integer.parseInt(new TempFileUser()
                                     .tempReadUser()), "Operador alterado " + u.getNome());
-                            JOptionPane.showMessageDialog(null, "Alterado com sucesso");
+                            JOptionPane.showMessageDialog(null, Messager.ALT_CAD);
                         }
                     }
                 }

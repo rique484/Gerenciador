@@ -7,7 +7,6 @@ package com.app.gerecia.view;
 
 import com.app.gerecia.config.TestConnect;
 import com.app.gerecia.model.Authentication;
-import javax.swing.JLabel;
 
 /*
  * @author rique
@@ -60,7 +59,7 @@ public class Auth extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102), 3));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -93,7 +92,7 @@ public class Auth extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(51, 0, 0));
+        jButton1.setForeground(new java.awt.Color(102, 0, 0));
         jButton1.setText("Sair");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,7 +106,7 @@ public class Auth extends javax.swing.JFrame {
 
         btnEntrar.setBackground(new java.awt.Color(204, 204, 204));
         btnEntrar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnEntrar.setForeground(new java.awt.Color(0, 51, 0));
+        btnEntrar.setForeground(new java.awt.Color(102, 102, 0));
         btnEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/iconfinder_login_account_enter_door_3005767.png"))); // NOI18N
         btnEntrar.setText("Entrar");
         btnEntrar.setEnabled(false);
@@ -117,12 +116,16 @@ public class Auth extends javax.swing.JFrame {
             }
         });
 
+        txtPass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/verification (2).png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/app/gerecia/img/password (2).png"))); // NOI18N
+
+        txtUser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

@@ -19,9 +19,13 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class Customer {
-    private static final String SELECT_CL = "select * from clientes where telefone = ?";
+
+    private static final String SELECT_CL = "select * from clientes "
+            + "where telefone = ?";
+    //****************************************************************************
     private static final String INSERT_CL = "insert into clientes"
-                    + "(nome,cep,endereco,numero,telefone) values(?,?,?,?,?)";
+            + "(nome,cep,endereco,numero,telefone) values(?,?,?,?,?)";
+    //****************************************************************************
     private Integer idcliente;
     private String nome;
     private Integer cep;
@@ -76,12 +80,12 @@ public class Customer {
     public void setTelefone(Integer telefone) {
         this.telefone = telefone;
     }
-    
-    public void insertCustomer(){
-        
+
+    public void insertCustomer() {
+
     }
-    
-    public Boolean search(){
+
+    public Boolean search() {
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -103,12 +107,12 @@ public class Customer {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println(e); 
+            System.out.println(e);
             return false;
         }
     }
-    
-    public Boolean cadcliente(){
+
+    public Boolean cadcliente() {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_CL;
@@ -134,5 +138,5 @@ public class Customer {
             return false;
         }
     }
-    
+
 }

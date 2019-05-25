@@ -52,6 +52,7 @@ public class OrderPend extends javax.swing.JFrame {
         tblPend = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Pendencia");
@@ -67,6 +68,7 @@ public class OrderPend extends javax.swing.JFrame {
 
             }
         ));
+        tblPend.setEnabled(false);
         jScrollPane1.setViewportView(tblPend);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

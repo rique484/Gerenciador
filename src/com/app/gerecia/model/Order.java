@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,27 +22,56 @@ public class Order {
 
     private static final String SELECT_ORDER_ALL = "select idpedido as 'Venda',"
             + "num_comanda as 'Comanda' from pedido where status=0";
+    //****************************************************************************
     private static final String SELECT_ORDER = "select * from pedido where "
             + "num_comanda=? AND status=0 ";
+    //****************************************************************************
     private static final String SELECT_ORDER_DELIVERY = "select * from delivery where "
             + "telefone=? AND status=0 ";
+    //****************************************************************************
     private static final String INSERT_ORDER = "insert into venda(valor,quanti"
-            + "dade,idproduto,idpedido,iduser,status_preparo,data,comiss) values(?,?,?,?,?,?,?,?)";
+            + "dade,idproduto,idpedido,iduser,status_preparo,data,comiss) "
+            + "values(?,?,?,?,?,?,?,?)";
+    //****************************************************************************
     private static final String INSERT_ORDER_DELIVERY = "insert into venda(valor,quanti"
-            + "dade,idproduto,iduser,status_preparo,data,iddelivery) values(?,?,?,?,?,?,?)";
+            + "dade,idproduto,iduser,status_preparo,data,iddelivery) "
+            + "values(?,?,?,?,?,?,?)";
+    //****************************************************************************
     private static final String CREATE_ORDER = "insert into pedido(num_comanda,"
             + "status,data) values(?,0,?)";
+    //****************************************************************************
     private static final String CREATE_ORDER_DELIVERY = "insert into delivery(telefone,"
             + "status,data) values(?,0,?)";
+    //****************************************************************************
     private static final String CREATE_PAY_DELIVERY = "insert into pagtdelivery"
             + "(iddelivery,cartaodb,cartaocd,dinheiro,troco_valor) values(?,?,?,?,?)";
+    //****************************************************************************
     private static final String CREATE_DESC_DELIVERY = "insert into obsdelivery"
             + "(obs,iddelivery) values(?,?)";
+    //****************************************************************************
     private static final String UPDATE1_ORDER_DELIVERY = "update delivery set "
             + "status=1 where iddelivery=?";
-    private static final String SELECT_ORDER_DELIVERY_PAY = "select * from delivery where "
-            + "telefone=? AND status=0 ";
-
+    //****************************************************************************
+    private static final String SELECT_ORDER_DELIVERY_PAY = "select idvenda as 'Venda',"
+            + "nome as 'Nome' ,valor_unt as 'Valor Unitario',"
+            + "quantidade as 'Quantidade', valor as 'Valor total' from produto "
+            + "inner join venda on produto.idproduto = venda.idproduto inner join Delivery on "
+            + "delivery.iddelivery = venda.iddelivery where delivery.iddelivery = ? and "
+            + "delivery.status=1";
+    //****************************************************************************
+    private static final String DELIVERY_SEARCH = "select iddelivery as 'Protocolo',"
+            + "delivery.telefone as 'Contato',"
+            + "datahora as 'Data e Hora',nome as 'Cliente',cep as 'CEP' "
+            + "from delivery inner join clientes on delivery.telefone = clientes.telefone "
+            + "where delivery.status = 1";
+    //****************************************************************************
+    private static final String ORDER_CLOSER = "update pedido set valor_total=?, "
+            + "status=1, modo_pagt=?, idcaixa=? where num_comanda=? and status=0";
+    //****************************************************************************
+    private static final String ORDER_CLOSER_D = "update delivery "
+            + "set valor_total=?, status=2, modo_pagt=?, "
+            + "idcaixa=? where iddelivery=? and status=1";
+    //****************************************************************************
     private Integer numero_comanda;
     private Integer numero_contato;
     private Double valor_total;
@@ -178,7 +206,7 @@ public class Order {
     }
 
     public Boolean orderInsert(Double valor, Integer quantidade, Integer idproduto,
-             Integer idpedido, Integer iduser, Integer status_preparo, Integer comiss) {
+            Integer idpedido, Integer iduser, Integer status_preparo, Integer comiss) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER;
@@ -198,7 +226,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -208,7 +235,7 @@ public class Order {
     }
 
     public Boolean orderInsertDelivery(Double valor, Integer quantidade, Integer idproduto,
-             Integer iduser, Integer status_preparo, Integer iddelivery) {
+            Integer iduser, Integer status_preparo, Integer iddelivery) {
         Connection conexao = null;
         PreparedStatement pst = null;
         String sql = INSERT_ORDER_DELIVERY;
@@ -227,7 +254,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -254,7 +280,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -278,7 +303,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -301,7 +325,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -323,7 +346,6 @@ public class Order {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
@@ -346,7 +368,7 @@ public class Order {
                 return true;
             } else {
                 System.out.println("erro");
-                JOptionPane.showMessageDialog(null, "Erro");
+                return false;
             }
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
@@ -359,10 +381,7 @@ public class Order {
         PreparedStatement pst = null;
         ResultSet rs = null;
         conexao = new ConfigDB().conector();
-        String sql = "select iddelivery as 'Protocolo',delivery.telefone as 'Contato',"
-                + "datahora as 'Data e Hora',nome as 'Cliente',cep as 'CEP' "
-                + "from delivery inner join clientes on delivery.telefone = clientes.telefone "
-                + "where delivery.status = 1";
+        String sql = DELIVERY_SEARCH;
         try {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
@@ -376,8 +395,7 @@ public class Order {
     public Boolean orderClose(Double valor, Integer modopagt, Integer operador, Integer comanda) {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "update pedido set valor_total=?, status=1, modo_pagt=?, "
-                + "idcaixa=? where num_comanda=? and status=0";
+        String sql = ORDER_CLOSER;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -403,8 +421,7 @@ public class Order {
     public Boolean orderDeliveryClose(Double valor, Integer modopagt, Integer operador, Integer comanda) {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "update delivery set valor_total=?, status=2, modo_pagt=?, "
-                + "idcaixa=? where iddelivery=? and status=1";
+        String sql = ORDER_CLOSER_D;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -432,11 +449,7 @@ public class Order {
         PreparedStatement pst = null;
         ResultSet rs = null;
         conexao = new ConfigDB().conector();
-        String sql = "select idvenda as 'Venda',nome as 'Nome' ,valor_unt as 'Valor Unitario',"
-                + "quantidade as 'Quantidade', valor as 'Valor total' from produto inner join venda on "
-                + "produto.idproduto = venda.idproduto inner join Delivery on "
-                + "delivery.iddelivery = venda.iddelivery where delivery.iddelivery = ? and "
-                + "delivery.status=1";
+        String sql = SELECT_ORDER_DELIVERY_PAY;
         try {
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, protocolo);

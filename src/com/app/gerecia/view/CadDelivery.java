@@ -5,7 +5,6 @@
  */
 package com.app.gerecia.view;
 
-import com.app.gerecia.config.Messager;
 import com.app.gerecia.model.Customer;
 import javax.swing.JOptionPane;
 
@@ -69,11 +68,7 @@ public class CadDelivery extends javax.swing.JFrame {
 
         jLabel5.setText("CEP");
 
-        try {
-            txtTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("########")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#########"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -149,7 +144,7 @@ public class CadDelivery extends javax.swing.JFrame {
         c.setEndereco(txtEndereco.getText());
         c.setNumero(Integer.parseInt(txtNumero.getText()));
         if(c.cadcliente()==true){
-            JOptionPane.showMessageDialog(null, "Faca a busca novamente");
+            JOptionPane.showMessageDialog(null, "Faça a busca novamente");
             dispose();
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed

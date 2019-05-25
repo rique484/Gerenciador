@@ -19,14 +19,27 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class Product {
+
+    private static final String SEARCH = "select * from produto where idproduto=?";
+    //****************************************************************************
+    private static final String CADASTROP = "insert into produto"
+            + "(nome,valor_unt,cod_bar,status,preparo) values(?,?,?,?,?)";
+    //****************************************************************************
+    private static final String ALTERAR = "update produto set nome=?, valor_unt=?, cod_bar=?, "
+            + "status=?,preparo=? where idproduto=?";
+    //****************************************************************************
+    private static final String ADSEARCH = "select idproduto as 'ID',nome as 'Nome', "
+            + "valor_unt as 'Valor' from produto where"
+            + " idproduto like ? and status = 0 or "
+            + "cod_bar = ? and status = 0";
+    //****************************************************************************
     private Integer id;
     private String nome;
     private Double valor;
     private String codBar;
     private Integer status;
     private Integer preparo;
-    
-    
+
     public Integer getId() {
         return id;
     }
@@ -74,12 +87,12 @@ public class Product {
     public void setPreparo(Integer preparo) {
         this.preparo = preparo;
     }
-    
+
     public Boolean search() {
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "select * from produto where idproduto=?";
+        String sql = SEARCH;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -101,12 +114,11 @@ public class Product {
         }
         return false;
     }
-    
-    public Boolean cadastroProduto(){
+
+    public Boolean cadastroProduto() {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into produto(nome,valor_unt,cod_bar,status,preparo)"
-                + " values(?,?,?,?,?)";
+        String sql = CADASTROP;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -121,25 +133,23 @@ public class Product {
                 JOptionPane.showMessageDialog(null, Messager.SUSS_CAD);
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
             String err = e.toString();
             if (err.contains("Duplicate")) {
-                JOptionPane.showMessageDialog(null, "Nome do produto ja cadastrado");
+                JOptionPane.showMessageDialog(null, Messager.ITEM_DUPLI);
             } else {
                 JOptionPane.showMessageDialog(null, e);
             }
             return false;
         }
     }
-    
+
     public Boolean alterar() {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "update produto set nome=?, valor_unt=?, cod_bar=?, "
-                + "status=?,preparo=? where idproduto=?";
+        String sql = ALTERAR;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -156,31 +166,27 @@ public class Product {
                 return true;
             } else {
                 System.out.println("erro");
-                JOptionPane.showMessageDialog(null, "Erro");
             }
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
         }
         return false;
     }
-    
-    public ResultSet advancedSearch(String busca){
-                Connection conexao = null;
-                PreparedStatement pst = null;
-                ResultSet rs = null;
-                String sql = "select idproduto as 'ID',nome as 'Nome', "
-                        + "valor_unt as 'Valor' from produto where"
-                        + " idproduto like ? and status = 0 or "
-                        + "cod_bar = ? and status = 0";   
-            try {
-                conexao = new ConfigDB().conector();
-                pst = conexao.prepareStatement(sql);
-                pst.setString(1,busca+"%"); 
-                pst.setString(2,busca);
-                rs = pst.executeQuery();   
-                return rs; 
-            } catch (SQLException e) {
-                return null; 
-            }     
+
+    public ResultSet advancedSearch(String busca) {
+        Connection conexao = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = ADSEARCH;
+        try {
+            conexao = new ConfigDB().conector();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, busca + "%");
+            pst.setString(2, busca);
+            rs = pst.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }

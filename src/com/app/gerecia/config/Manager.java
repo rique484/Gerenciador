@@ -20,9 +20,11 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class Manager {
-
     private static final String MANAGER_ADM = "select * from user where iduser=? ";
-    private static final String MANAGER_CASHIER = "select * from caixa where iduser = ? and data = ? and status = 1 ";
+    private static final String MANAGER_CASHIER = "select * from caixa "
+            + "where iduser = ? and data = ? and status = 1 ";
+    private static final String LOGDATA = "insert into logdata(iduser,descricaolog) "
+            + "values(?,?)";
     private Integer check = 0;
 
     public Integer checkADMIN(String user) {
@@ -51,7 +53,7 @@ public class Manager {
     public void logData(Integer operador, String log) {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into logdata(iduser,descricaolog) values(?,?)";
+        String sql = LOGDATA;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);

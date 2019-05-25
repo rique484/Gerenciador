@@ -112,7 +112,7 @@ public class Print {
                 excel.write("\n");
             }
             excel.close();
-            JOptionPane.showMessageDialog(null, "Gerado com sucesso");
+            JOptionPane.showMessageDialog(null, Messager.MSG_SUSS);
         } catch (IOException e) {
             System.out.println(e);
         }

@@ -6,6 +6,7 @@
 package com.app.gerecia.model;
 
 import com.app.gerecia.config.ConfigDB;
+import com.app.gerecia.config.Messager;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,16 @@ import javax.swing.JOptionPane;
  * @author rique
  */
 public class User {
-    
+
+    private static final String CADASTRO = "insert into "
+            + "user(cpf,nome,user,pass,comissao,admin) values(?,?,?,?,?,?)";
+    //****************************************************************************
+    private static final String CONSULTA = "select * from user where cpf=?";
+    //****************************************************************************
+    private static final String ALTERAR = "update user set cpf=?, nome=?, user=?,"
+            + " pass=?, comissao=?, admin=?, status=? where iduser=?";
+    //****************************************************************************
+
     private String nome;
     private String user;
     private String pass;
@@ -28,6 +38,7 @@ public class User {
     private Integer status;
     private Integer tipo;
 
+    //****************************************************************************
     public String getNome() {
         return nome;
     }
@@ -91,11 +102,11 @@ public class User {
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
     }
-    
+
     public Boolean cadastro() {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "insert into user(cpf,nome,user,pass,comissao,admin) values(?,?,?,?,?,?)";
+        String sql = CADASTRO;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -106,30 +117,28 @@ public class User {
             pst.setInt(5, comissao);
             pst.setInt(6, tipo);
             int add = pst.executeUpdate();
-
             if (add > 0) {
                 conexao.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Erro");
                 return false;
             }
         } catch (HeadlessException | SQLException e) {
             String err = e.toString();
             if (err.contains("Duplicate")) {
-                JOptionPane.showMessageDialog(null, "Usuario e/ou CPF ja cadastrado !");
+                JOptionPane.showMessageDialog(null, Messager.USER_DUPLI);
             } else {
                 JOptionPane.showMessageDialog(null, e);
             }
             return false;
         }
     }
-    
+
     public Boolean consultar() {
         Connection conexao = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "select * from user where cpf=?";
+        String sql = CONSULTA;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -146,16 +155,18 @@ public class User {
                 return true;
             } else {
                 System.out.println("erro");
+                return false;
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return false;
     }
+
     public Boolean alterar() {
         Connection conexao = null;
         PreparedStatement pst = null;
-        String sql = "update user set cpf=?, nome=?, user=?, pass=?, comissao=?, admin=?, status=? where iduser=?";
+        String sql = ALTERAR;
         try {
             conexao = new ConfigDB().conector();
             pst = conexao.prepareStatement(sql);
@@ -173,14 +184,13 @@ public class User {
                 return true;
             } else {
                 System.out.println("erro");
-                JOptionPane.showMessageDialog(null, "Erro");
             }
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
         }
         return false;
     }
-    
+
     public Boolean consultarViaId(Integer id) {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -202,11 +212,12 @@ public class User {
                 return true;
             } else {
                 System.out.println("erro");
+                return false;
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return false;
     }
-    
+
 }
