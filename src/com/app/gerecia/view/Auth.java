@@ -22,12 +22,12 @@ public class Auth extends javax.swing.JFrame {
         jLabel3.setVisible(false);
         btnConfig.setVisible(false);
         TestConnect t = new TestConnect();
-        if(t.testC()!=false){
-        jLabel4.setVisible(true);
-        btnEntrar.setEnabled(true);
-        }else{
-        jLabel3.setVisible(true);
-        btnConfig.setVisible(true);
+        if (t.testC() != false) {
+            jLabel4.setVisible(true);
+            btnEntrar.setEnabled(true);
+        } else {
+            jLabel3.setVisible(true);
+            btnConfig.setVisible(true);
         }
     }
 
@@ -211,26 +211,25 @@ public class Auth extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
-        // TODO add your handling code here:
+
         new FileConfig().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnConfigActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        // TODO add your handling code here:
         Authentication a = new Authentication();
-        if(a.auth(txtUser.getText(), txtPass.getText())==true){
+        if (a.auth(txtUser.getText(), txtPass.getText()) == true) {
             new Home().setVisible(true);
             dispose();
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfig;
     private javax.swing.JButton btnEntrar;

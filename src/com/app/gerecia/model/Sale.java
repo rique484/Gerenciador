@@ -35,7 +35,7 @@ public class Sale {
             + "delivery.status=0";
     //****************************************************************************
     private static final String ZERO_SALE = "update "
-            + "pedido set status=-1 where num_comanda=?";
+            + "pedido set status=-1 where idpedido=?";
     //****************************************************************************
     private static final String ZERO_SALE_DELIVERY = "update "
             + "delivery set status=-1 where iddelivery=?";

@@ -425,7 +425,7 @@ public class Attendance extends javax.swing.JFrame {
     private void btnZeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZeroActionPerformed
         orderList(Integer.parseInt(txtBuscarCom.getText()));
         if (lbValorTotal.getText().equals("R$ 0.0")) {
-            new Sale().ZeroSale(Integer.parseInt(txtBuscarCom.getText()));
+            new Sale().ZeroSale(Integer.parseInt(new TempFileUser().tempReadOrder()));
             dispose();
             new Attendance().setVisible(true);
         } else {
