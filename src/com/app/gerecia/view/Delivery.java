@@ -346,7 +346,7 @@ public class Delivery extends javax.swing.JFrame {
         });
 
         dinheiroOuCartao.add(chkCatao);
-        chkCatao.setText("Cartao");
+        chkCatao.setText("Cartão");
         chkCatao.setEnabled(false);
         chkCatao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -364,11 +364,11 @@ public class Delivery extends javax.swing.JFrame {
 
         buttonGroup1.add(chkDebito);
         chkDebito.setSelected(true);
-        chkDebito.setText("Debito");
+        chkDebito.setText("Débito");
         chkDebito.setEnabled(false);
 
         buttonGroup1.add(chkCredito);
-        chkCredito.setText("Credito");
+        chkCredito.setText("Crédito");
         chkCredito.setEnabled(false);
 
         txtTroco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0,00"))));

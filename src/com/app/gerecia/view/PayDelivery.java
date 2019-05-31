@@ -77,7 +77,7 @@ public class PayDelivery extends javax.swing.JFrame {
 
         btnDebito.setBackground(new java.awt.Color(204, 204, 204));
         btnDebito.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnDebito.setText("Debito");
+        btnDebito.setText("Débito");
         btnDebito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDebitoActionPerformed(evt);
@@ -86,7 +86,7 @@ public class PayDelivery extends javax.swing.JFrame {
 
         btnCredito.setBackground(new java.awt.Color(204, 204, 204));
         btnCredito.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnCredito.setText("Credito");
+        btnCredito.setText("Crédito");
         btnCredito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCreditoActionPerformed(evt);
@@ -125,7 +125,6 @@ public class PayDelivery extends javax.swing.JFrame {
                                 .addGap(28, 28, 28)
                                 .addComponent(btnCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))

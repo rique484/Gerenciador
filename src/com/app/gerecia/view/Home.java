@@ -229,7 +229,7 @@ public class Home extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         mRelatorio.setForeground(new java.awt.Color(102, 102, 102));
-        mRelatorio.setText("Relatorios");
+        mRelatorio.setText("Relatórios");
         mRelatorio.setEnabled(false);
         mRelatorio.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
 
@@ -258,7 +258,7 @@ public class Home extends javax.swing.JFrame {
         mFinanc.add(jMenuItem7);
 
         jMenuItem8.setBackground(new java.awt.Color(204, 204, 204));
-        jMenuItem8.setText("Venda unitaria");
+        jMenuItem8.setText("Venda unitária");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);

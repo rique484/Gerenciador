@@ -208,7 +208,7 @@ public class CadUser extends javax.swing.JFrame {
         });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Comissao");
+        jLabel7.setText("Comissão");
 
         lbComissao.setText("0 %");
 
@@ -261,7 +261,7 @@ public class CadUser extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 3, 10)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel8.setText("Todos os campos sao obrigatorios");
+        jLabel8.setText("Todos os campos são obrigatorios");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

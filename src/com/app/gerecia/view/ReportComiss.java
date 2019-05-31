@@ -53,10 +53,10 @@ public class ReportComiss extends javax.swing.JFrame {
         setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Relatorio de venda");
+        jLabel1.setText("Relatório de venda");
 
         buttonGroup1.add(chkDiario);
-        chkDiario.setText("Diario");
+        chkDiario.setText("Diário");
         chkDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkDiarioActionPerformed(evt);
@@ -64,7 +64,7 @@ public class ReportComiss extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(chkPeriodo);
-        chkPeriodo.setText("Periodo");
+        chkPeriodo.setText("Período");
         chkPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkPeriodoActionPerformed(evt);
@@ -109,10 +109,10 @@ public class ReportComiss extends javax.swing.JFrame {
         jLabel2.setText("Valor total da venda");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Valor total da comissao");
+        jLabel3.setText("Valor total da comissão");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("Valor total da venda apos comissao");
+        jLabel4.setText("Valor total da venda apos comissão");
 
         chkOp.setText("Por operador");
         chkOp.addActionListener(new java.awt.event.ActionListener() {

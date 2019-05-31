@@ -81,7 +81,7 @@ public class GeneralMovement extends javax.swing.JFrame {
         txtData.setEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Relatorio de movimento geral");
+        jLabel1.setText("Relatório de movimento geral");
 
         btnImprimir.setBackground(new java.awt.Color(204, 204, 204));
         btnImprimir.setText("Imprimir");
@@ -113,7 +113,7 @@ public class GeneralMovement extends javax.swing.JFrame {
         txtDataf.setEnabled(false);
 
         buttonGroup1.add(chkDiario);
-        chkDiario.setText("Diario");
+        chkDiario.setText("Diário");
         chkDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkDiarioActionPerformed(evt);
@@ -121,7 +121,7 @@ public class GeneralMovement extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(chkPeriodo);
-        chkPeriodo.setText("Periodo");
+        chkPeriodo.setText("Período");
         chkPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkPeriodoActionPerformed(evt);

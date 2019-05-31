@@ -49,9 +49,9 @@ public class CadDelivery extends javax.swing.JFrame {
 
         jLabel2.setText("Telefone");
 
-        jLabel3.setText("Endereco");
+        jLabel3.setText("Endereço");
 
-        jLabel4.setText("Numero");
+        jLabel4.setText("Número");
 
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
