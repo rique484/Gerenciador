@@ -51,7 +51,7 @@ public class ConfigDB {
             return false;
         }
     } 
-    public void getConfig(){
+    public String getConfig(){
         try{
             FileReader arq = new FileReader("conf.con");
             BufferedReader lerArq = new BufferedReader(arq);
@@ -68,6 +68,7 @@ public class ConfigDB {
         }
             }catch(FileNotFoundException e){
             Boolean erro = true; 
-            }  
+            } 
+        return caminho;
     }
 }

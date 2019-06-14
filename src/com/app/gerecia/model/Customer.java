@@ -24,7 +24,7 @@ public class Customer {
             + "where telefone = ?";
     //****************************************************************************
     private static final String INSERT_CL = "insert into clientes"
-            + "(nome,cep,endereco,numero,telefone) values(?,?,?,?,?)";
+            + "(nome,cep,endereco,numero,telefone,email) values(?,?,?,?,?,?)";
     //****************************************************************************
     private Integer idcliente;
     private String nome;
@@ -32,6 +32,15 @@ public class Customer {
     private String endereco;
     private Integer numero;
     private Integer telefone;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Integer getIdcliente() {
         return idcliente;
@@ -101,6 +110,7 @@ public class Customer {
                 setCep(rs.getInt(3));
                 setEndereco(rs.getString(4));
                 setNumero(rs.getInt(5));
+                setEmail(rs.getString(7));
                 conexao.close();
                 return true;
             } else {
@@ -124,6 +134,7 @@ public class Customer {
             pst.setString(3, endereco);
             pst.setInt(4, numero);
             pst.setInt(5, telefone);
+            pst.setString(6, email);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();

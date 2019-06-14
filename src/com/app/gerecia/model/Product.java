@@ -23,7 +23,7 @@ public class Product {
     private static final String SEARCH = "select * from produto where idproduto=?";
     //****************************************************************************
     private static final String CADASTROP = "insert into produto"
-            + "(nome,valor_unt,cod_bar,status,preparo) values(?,?,?,?,?)";
+            + "(nome,valor_unt,cod_bar,status,preparo,idcategoria) values(?,?,?,?,?,?)";
     //****************************************************************************
     private static final String ALTERAR = "update produto set nome=?, valor_unt=?, cod_bar=?, "
             + "status=?,preparo=? where idproduto=?";
@@ -39,6 +39,7 @@ public class Product {
     private String codBar;
     private Integer status;
     private Integer preparo;
+    private Integer categoria;
 
     public Integer getId() {
         return id;
@@ -88,6 +89,14 @@ public class Product {
         this.preparo = preparo;
     }
 
+    public Integer getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Integer categoria) {
+        this.categoria = categoria;
+    }
+    
     public Boolean search() {
         Connection conexao = null;
         PreparedStatement pst = null;
@@ -127,6 +136,7 @@ public class Product {
             pst.setString(3, codBar);
             pst.setInt(4, status);
             pst.setInt(5, preparo);
+            pst.setInt(6, categoria);
             int add = pst.executeUpdate();
             if (add > 0) {
                 conexao.close();
